@@ -1,52 +1,40 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace DownloaderSeriesWithSeasonvar.Core
 {
-    public class PlaylistParser
+    public static class PlaylistParser
     {
-        private string patternStr;
-        private string tvSeriesName;
-
-        public PlaylistParser(string tvSeriesName)
+        public static List<Series> JsonPlaylistConvertToSeasonObject(string playlistJson, string noisePattern = "//b2xvbG8=")
         {
-            patternStr = "//b2xvbG8=";
-            this.tvSeriesName = tvSeriesName;
-        }
+            var allSeriesJson = JArray.Parse(playlistJson);
+            var seriesList = new List<Series>();
 
-        internal Season JsonPlaylistConvertToSeasonObject(string jsonPlaylist)
-        {
-            var Season = new Season(tvSeriesName);
-
-            var allSeriesJson = JArray.Parse(jsonPlaylist);
-
-            foreach (var item in allSeriesJson)
+            foreach(var item in allSeriesJson)
             {
                 byte seriesNumber = (byte)item.SelectToken("id");
-                Uri seriesUri = ValidateUriSeries((string)item.SelectToken("file"));
+                Uri seriesUri = ValidateUriSeries((string)item.SelectToken("file"), noisePattern);
                 //int fileSize = GetFileSize(seriesUri);
                 int fileSize = 0;
 
-                Season.AddSeries(seriesUri, fileSize, seriesNumber);
+                seriesList.Add(new Series($"Серия seriesNumber", seriesUri, fileSize, seriesNumber));
             }
 
-            return Season;
+            return seriesList;
         }
 
-        private Uri ValidateUriSeries(string strUri)
+        private static Uri ValidateUriSeries(string strUri, string noisePattern)
         {
             strUri = strUri.Remove(0, 2);
 
-            if (patternStr != "")
+            if (noisePattern != "")
             {
-                int indexM3 = strUri.IndexOf(patternStr);
+                int indexM3 = strUri.IndexOf(noisePattern);
                 if (indexM3 > 0)
                 {
-                    var patternRemoveStr = strUri.Remove(indexM3, patternStr.Length);
+                    var patternRemoveStr = strUri.Remove(indexM3, noisePattern.Length);
 
                     string decodedStringBase = Encoding.UTF8.GetString(
                         Convert.FromBase64String(patternRemoveStr));
@@ -84,7 +72,6 @@ namespace DownloaderSeriesWithSeasonvar.Core
                 if (strUri[i] == '=')
                     strUri = strUri.Remove(i, 1);
             }
-
 
             byte[] data = Convert.FromBase64String(strUri);
             string decodedString = Encoding.UTF8.GetString(data);

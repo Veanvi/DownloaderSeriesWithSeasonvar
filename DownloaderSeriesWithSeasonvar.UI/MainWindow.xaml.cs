@@ -42,7 +42,16 @@ namespace DownloaderSeriesWithSeasonvar.UI
 
         private void BtnCopyToClipboard_Click(object sender, RoutedEventArgs e)
         {
-            Clipboard.SetText(tbUriList.Text);
+            //Clipboard.SetText(tbUriList.Text);
+            var downloaderPlist = new DownloaderSeasonInfo(new Uri(TbUri.Text), true, false);
+
+            Season season = downloaderPlist.DownloadSeasonInfo();
+
+            var printString = new StringBuilder();
+            foreach (var series in season.SeriesList)
+                printString.AppendLine(series.FileUri.ToString());
+            tbUriList.Text = printString.ToString();
+
         }
 
         private async void OpenPlistInputWindow_Click(object sender, RoutedEventArgs e)

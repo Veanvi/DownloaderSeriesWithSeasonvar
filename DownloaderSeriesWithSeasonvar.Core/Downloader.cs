@@ -52,11 +52,11 @@ namespace DownloaderSeriesWithSeasonvar.Core
                 var chromeOptions = new ChromeOptions();
                 chromeOptions.AddArguments(new List<string>()
                 {
-                    "--headless",
-                    "--disable-gpu",
+                    //"--headless",
+                    //"--disable-gpu",
                     "--window-size=1200,1000",
                     "--blink-settings=imagesEnabled=false",
-                    //"--proxy-server=socks5://localhost:9150"
+                    "--proxy-server=socks5://localhost:9050"
                 });
 
                 var chromeDriverService = ChromeDriverService.CreateDefaultService();

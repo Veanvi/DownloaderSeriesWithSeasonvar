@@ -1,25 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DownloaderSeriesWithSeasonvar.Core
 {
     public class Season
     {
-        internal Season(string serealName):this(serealName, new List<Series>()){}
+        public Season(string serealName) : this(serealName, null)
+        {
+        }
 
-        internal Season(string serealName, List<Series> seriesList)
+        internal Season(string serealName, string playlistJson)
         {
             SerealName = serealName;
-            SeriesList = seriesList;
+            PlaylistJson = playlistJson;
+            if (PlaylistJson != null)
+            {
+                SeriesList = PlaylistParser.JsonPlaylistConvertToSeasonObject(playlistJson);
+            }
         }
+
+        public string PlaylistJson { get; }
 
         public string SerealName { get; }
 
+        private List<Series> seriesList;
 
-        public List<Series> SeriesList { get; private set; }
+        public List<Series> SeriesList
+        {
+            get
+            {
+                if (seriesList == null)
+                    seriesList = new List<Series>();
+                return seriesList;
+            }
+            internal set
+            {
+                seriesList = new List<Series>();
+                foreach (var item in value)
+                {
+                    AddSeries(item.FileUri, item.FileSize, item.Number);
+                }
+            }
+        }
 
         internal void AddSeries(Uri fileUri, int fileSize, byte number)
         {
@@ -36,7 +58,7 @@ namespace DownloaderSeriesWithSeasonvar.Core
                 return false;
 
             bool isSeriesListEquals = true;
-            for(int i = 0; i < SeriesList.Count; i++)
+            for (int i = 0; i < SeriesList.Count; i++)
             {
                 if (isSeriesListEquals == false)
                     break;
