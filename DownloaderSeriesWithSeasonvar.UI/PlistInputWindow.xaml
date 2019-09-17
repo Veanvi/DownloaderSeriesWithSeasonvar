@@ -1,0 +1,37 @@
+﻿<Window x:Class="DownloaderSeriesWithSeasonvar.UI.PlistInputWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DownloaderSeriesWithSeasonvar.UI"
+        mc:Ignorable="d"
+        Title="PlistInputWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <StackPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0">Селектор XPath:</Label>
+                <TextBox Grid.Column="1" Name="xpathSelector" VerticalAlignment="Center">//*[@id="player_wrap"]/div[1]/script[4]/text()</TextBox>
+                <Label Grid.Column="2">Паттерн:</Label>
+                <TextBox Grid.Column="3" Name="tbPattern">//b2xvbG8=</TextBox>
+            </Grid>
+
+            <Button Name="copySelector" Click="CopySelector_Click">Скопировать</Button>
+
+        </StackPanel>
+        <TextBox Grid.Row="1" Name="tbPlist" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"></TextBox>
+        <Button Grid.Row="2" Height="30" Name="OkDialog" Click="OkDialog_Click">Ok</Button>
+
+    </Grid>
+</Window>
