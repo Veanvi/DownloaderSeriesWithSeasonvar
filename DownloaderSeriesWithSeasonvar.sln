@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2036
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29215.179
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DownloaderSeriesWithSeasonvar.UI", "DownloaderSeriesWithSeasonvar.UI\DownloaderSeriesWithSeasonvar.UI.csproj", "{A486124A-B2B4-4D94-BF33-95C57EBD5F61}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DownloaderSeriesWithSeasonvar.Core", "DownloaderSeriesWithSeasonvar.Core\DownloaderSeriesWithSeasonvar.Core.csproj", "{DCC1A7FE-D8EA-41B5-877F-078E330EF69D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DownloaderSeriesWithSeasonvar.Core.Tests", "DownloaderSeriesWithSeasonvar.Core.Tests\DownloaderSeriesWithSeasonvar.Core.Tests.csproj", "{867E5F5D-051C-4CDA-9986-CA8FCF82FD8D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{DCC1A7FE-D8EA-41B5-877F-078E330EF69D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DCC1A7FE-D8EA-41B5-877F-078E330EF69D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DCC1A7FE-D8EA-41B5-877F-078E330EF69D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{867E5F5D-051C-4CDA-9986-CA8FCF82FD8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{867E5F5D-051C-4CDA-9986-CA8FCF82FD8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{867E5F5D-051C-4CDA-9986-CA8FCF82FD8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{867E5F5D-051C-4CDA-9986-CA8FCF82FD8D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
