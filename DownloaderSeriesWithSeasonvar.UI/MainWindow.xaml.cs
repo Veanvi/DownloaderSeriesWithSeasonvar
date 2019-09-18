@@ -20,7 +20,7 @@ namespace DownloaderSeriesWithSeasonvar.UI
 
         private void BtnCopyToClipboard_Click(object sender, RoutedEventArgs e)
         {
-            Clipboard.SetText(tbUriList.Text);
+            Clipboard.SetDataObject(tbUriList.Text);
             lbCurrentStageOfWork.Content = "Ссылки скопированы в буфер обмена";
             tbUri.Text = "";
             tbUriList.Text = "";
