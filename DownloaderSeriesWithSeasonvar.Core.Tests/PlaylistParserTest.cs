@@ -1,6 +1,5 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using DownloaderSeriesWithSeasonvar.Core;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 
 namespace DownloaderSeriesWithSeasonvar.Core.Tests
@@ -8,8 +7,21 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
     [TestClass]
     public class PlaylistParserTest
     {
-        string correctJsonPlaylist;
-        Season correctConvertSeason;
+        private Season correctConvertSeason;
+        private string correctJsonPlaylist;
+
+        [TestMethod]
+        public void JsonPlaylistConvertToSeasonObject_JsonString_CorrectSeasonObject()
+        {
+            // Arrage
+            //var pParser = new PlaylistParser("Dr. Horrible's Sing-Along Blog");
+            // Act
+            var seriesList = PlaylistParser.JsonPlaylistConvertToSeasonObject(correctJsonPlaylist);
+            var result = new Season("Dr. Horrible's Sing-Along Blog");
+            result.SeriesList = seriesList;
+            // Assert
+            Assert.AreEqual(correctConvertSeason, result);
+        }
 
         [TestInitialize()]
         public void TestInitialize()
@@ -34,20 +46,6 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
                     0,
                     3),
             };
-
-        }
-
-        [TestMethod]
-        public void JsonPlaylistConvertToSeasonObject_JsonString_CorrectSeasonObject()
-        {
-            // Arrage
-            //var pParser = new PlaylistParser("Dr. Horrible's Sing-Along Blog");
-            // Act
-            var seriesList = PlaylistParser.JsonPlaylistConvertToSeasonObject(correctJsonPlaylist);
-            var result = new Season("Dr. Horrible's Sing-Along Blog");
-            result.SeriesList = seriesList;
-            // Assert
-            Assert.AreEqual(correctConvertSeason, result);
         }
     }
 }

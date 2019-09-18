@@ -12,7 +12,7 @@ namespace DownloaderSeriesWithSeasonvar.Core
             var allSeriesJson = JArray.Parse(playlistJson);
             var seriesList = new List<Series>();
 
-            foreach(var item in allSeriesJson)
+            foreach (var item in allSeriesJson)
             {
                 byte seriesNumber = (byte)item.SelectToken("id");
                 Uri seriesUri = ValidateUriSeries((string)item.SelectToken("file"), noisePattern);

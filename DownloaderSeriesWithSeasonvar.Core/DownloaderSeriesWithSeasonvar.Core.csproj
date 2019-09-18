@@ -58,7 +58,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Downloader.cs" />
     <Compile Include="DownloaderSeasonInfo.cs" />
     <Compile Include="PlaylistParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

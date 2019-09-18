@@ -12,10 +12,10 @@ namespace DownloaderSeriesWithSeasonvar.Core
             FileSize = fileSize;
         }
 
+        public int FileSize { get; }
+        public Uri FileUri { get; }
         public string Name { get; }
         public byte Number { get; }
-        public Uri FileUri { get; }
-        public int FileSize { get; }
 
         public override bool Equals(object obj)
         {

@@ -14,7 +14,7 @@
                 <RowDefinition Height="auto"></RowDefinition>
             </Grid.RowDefinitions>
             <StackPanel  Grid.Row="0">
-                <TextBox  Name="TbUri"/>
+                <TextBox  Name="TbUri" />
                 <Grid Height="30">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"></ColumnDefinition>
@@ -25,11 +25,10 @@
                     <Button Grid.Column="2" Name="BtnCopyToClipboard" Content="Скопировать все ссылки" Click="BtnCopyToClipboard_Click" />
                     <Button Grid.Column="1" Name="OpenPlistInputWindow" Click="OpenPlistInputWindow_Click">Ввести Plist вручную</Button>
                 </Grid>
-                
             </StackPanel>
 
-            <TextBox Grid.Row="1" Name="tbUriList"/>
-            <Label Grid.Row="2" Name="lbCurrentStageOfWork" Content="Ничего не происходит." Background="#FF449991" FontSize="14" FontWeight="Bold"/>
+            <TextBox Grid.Row="1" Name="tbUriList" />
+            <Label Grid.Row="2" Name="lbCurrentStageOfWork" Content="Ничего не происходит." Background="#FF449991" FontSize="14" FontWeight="Bold" />
         </Grid>
     </Grid>
 </Window>

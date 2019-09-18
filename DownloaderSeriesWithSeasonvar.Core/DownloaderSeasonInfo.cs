@@ -8,10 +8,6 @@ namespace DownloaderSeriesWithSeasonvar.Core
 {
     public class DownloaderSeasonInfo
     {
-        public Uri SeasonUri { get; }
-        public bool IsEnableTorProxy { get; }
-        public bool IsHeadless { get; }
-
         public DownloaderSeasonInfo(Uri uri, bool enableTorProxy = false, bool headless = true)
         {
             SeasonUri = uri;
@@ -19,12 +15,16 @@ namespace DownloaderSeriesWithSeasonvar.Core
             IsHeadless = headless;
         }
 
+        public bool IsEnableTorProxy { get; }
+        public bool IsHeadless { get; }
+        public Uri SeasonUri { get; }
+
         public Season DownloadSeasonInfo()
         {
             string playlistJson = null;
             string serialName = null;
             IWebDriver webDriver = null;
-            
+
             try
             {
                 var chromeOptions = new ChromeOptions();

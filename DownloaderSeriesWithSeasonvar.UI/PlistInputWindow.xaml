@@ -28,10 +28,8 @@
             </Grid>
 
             <Button Name="copySelector" Click="CopySelector_Click">Скопировать</Button>
-
         </StackPanel>
         <TextBox Grid.Row="1" Name="tbPlist" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"></TextBox>
         <Button Grid.Row="2" Height="30" Name="OkDialog" Click="OkDialog_Click">Ok</Button>
-
     </Grid>
 </Window>

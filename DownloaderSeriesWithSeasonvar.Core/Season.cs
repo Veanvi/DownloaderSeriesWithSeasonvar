@@ -5,11 +5,13 @@ namespace DownloaderSeriesWithSeasonvar.Core
 {
     public class Season
     {
+        private List<Series> seriesList;
+
         public Season(string serealName) : this(serealName, null)
         {
         }
 
-        internal Season(string serealName, string playlistJson)
+        public Season(string serealName, string playlistJson)
         {
             SerealName = serealName;
             PlaylistJson = playlistJson;
@@ -23,8 +25,6 @@ namespace DownloaderSeriesWithSeasonvar.Core
 
         public string SerealName { get; }
 
-        private List<Series> seriesList;
-
         public List<Series> SeriesList
         {
             get
@@ -33,7 +33,7 @@ namespace DownloaderSeriesWithSeasonvar.Core
                     seriesList = new List<Series>();
                 return seriesList;
             }
-            internal set
+            set
             {
                 seriesList = new List<Series>();
                 foreach (var item in value)
@@ -41,11 +41,6 @@ namespace DownloaderSeriesWithSeasonvar.Core
                     AddSeries(item.FileUri, item.FileSize, item.Number);
                 }
             }
-        }
-
-        internal void AddSeries(Uri fileUri, int fileSize, byte number)
-        {
-            SeriesList.Add(new Series($"{SerealName} Серия {number}", fileUri, fileSize, number));
         }
 
         public override bool Equals(object obj)
@@ -70,6 +65,11 @@ namespace DownloaderSeriesWithSeasonvar.Core
                 return true;
 
             return false;
+        }
+
+        internal void AddSeries(Uri fileUri, int fileSize, byte number)
+        {
+            SeriesList.Add(new Series($"{SerealName} Серия {number}", fileUri, fileSize, number));
         }
     }
 }
