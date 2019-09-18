@@ -14,22 +14,44 @@ namespace DownloaderSeriesWithSeasonvar.UI
         {
             InitializeComponent();
 #if DEBUG
-            TbUri.Text = "http://seasonvar.ru/serial-17482-Doktor_Kto-11-season.html";
+            tbUri.Text = "http://seasonvar.ru/serial-17482-Doktor_Kto-11-season.html";
 #endif
         }
 
         private void BtnCopyToClipboard_Click(object sender, RoutedEventArgs e)
         {
             Clipboard.SetText(tbUriList.Text);
+            lbCurrentStageOfWork.Content = "Ссылки скопированы в буфер обмена";
+            tbUri.Text = "";
+            tbUriList.Text = "";
         }
 
         private async void GetSeason_Click(object sender, RoutedEventArgs e)
         {
             tbUriList.Text = "";
-            var downloaderPlist = new DownloaderSeasonInfo(new Uri(TbUri.Text), true, false);
-            Season season = await downloaderPlist.DownloadSeasonInfoAsync();
+            if (tbUri.Text == "")
+            {
+                lbCurrentStageOfWork.Content = "Введите адрес сереала";
+                return;
+            }
+            lbCurrentStageOfWork.Content = "Запущен браузер";
+            var downloaderPlist = new DownloaderSeasonInfo(
+                new Uri(tbUri.Text), (bool)cbTorProxy.IsChecked, (bool)cbHeadlessBrowser.IsChecked);
+            Season season = null;
 
+            try
+            {
+                season = await downloaderPlist.DownloadSeasonInfoAsync();
+            }
+            catch (Exception ex)
+            {
+                lbCurrentStageOfWork.Content = ex.Message;
+                return;
+            }
+
+            lbCurrentStageOfWork.Content = "Все ссылки получены";
             PrintSeriesUri(season);
+            lbCurrentStageOfWork.Content = "Работа закончена";
         }
 
         private void OpenPlistInputWindow_Click(object sender, RoutedEventArgs e)
@@ -51,6 +73,7 @@ namespace DownloaderSeriesWithSeasonvar.UI
 
                 PrintSeriesUri(season);
             }
+            lbCurrentStageOfWork.Content = "Все ссылки получены";
         }
 
         private void PrintSeriesUri(Season season)

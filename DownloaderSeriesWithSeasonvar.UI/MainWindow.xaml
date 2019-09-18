@@ -5,30 +5,34 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DownloaderSeriesWithSeasonvar.UI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="950">
+        Title="MainWindow" SizeToContent="WidthAndHeight">
     <Grid>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"></RowDefinition>
-                <RowDefinition></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
                 <RowDefinition Height="auto"></RowDefinition>
             </Grid.RowDefinitions>
             <StackPanel  Grid.Row="0">
-                <TextBox  Name="TbUri" />
+                <TextBox  Name="tbUri" />
                 <Grid Height="30">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Button Name="GetSeason" Click="GetSeason_Click">Получить инфу по сезону</Button>
-                    <Button Grid.Column="2" Name="BtnCopyToClipboard" Content="Скопировать все ссылки" Click="BtnCopyToClipboard_Click" />
-                    <Button Grid.Column="1" Name="OpenPlistInputWindow" Click="OpenPlistInputWindow_Click">Ввести Plist вручную</Button>
+                    <Button Name="GetSeason" Click="GetSeason_Click" Padding="10 0">Получить инфу по сезону</Button>
+                    <Button Grid.Column="2" Name="BtnCopyToClipboard" Click="BtnCopyToClipboard_Click" Padding="10 0">Скопировать все ссылки</Button>
+                    <Button Grid.Column="1" Name="OpenPlistInputWindow" Click="OpenPlistInputWindow_Click" Padding="10 0">Ввести Plist вручную</Button>
                 </Grid>
+                <StackPanel Orientation="Horizontal" Name="spSettingsList">
+                    <CheckBox Content="Tor Proxy" Name="cbTorProxy" IsChecked="True" Margin="5" />
+                    <CheckBox Content="Headless Browser" Name="cbHeadlessBrowser" IsChecked="True" Margin="5" />
+                </StackPanel>
             </StackPanel>
 
             <TextBox Grid.Row="1" Name="tbUriList" />
-            <Label Grid.Row="2" Name="lbCurrentStageOfWork" Content="Ничего не происходит." Background="#FF449991" FontSize="14" FontWeight="Bold" />
+            <Label Grid.Row="2" Name="lbCurrentStageOfWork" Background="#FF449991" FontSize="14" FontWeight="Bold" Height="29" />
         </Grid>
     </Grid>
 </Window>

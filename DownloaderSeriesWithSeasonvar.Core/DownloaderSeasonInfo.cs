@@ -53,6 +53,7 @@ namespace DownloaderSeriesWithSeasonvar.Core
             }
             catch (Exception e)
             {
+                throw new Exception("Ошибка загрузки данных");
             }
             finally
             {
