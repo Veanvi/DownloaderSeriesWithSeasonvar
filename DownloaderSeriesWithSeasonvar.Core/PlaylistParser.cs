@@ -12,10 +12,10 @@ namespace DownloaderSeriesWithSeasonvar.Core
             var allSeriesJson = JArray.Parse(playlistJson);
             var seriesList = new List<Series>();
 
-            foreach (var item in allSeriesJson)
+            foreach (var series in allSeriesJson)
             {
-                byte seriesNumber = (byte)item.SelectToken("id");
-                Uri seriesUri = ValidateUriSeries((string)item.SelectToken("file"), noisePattern);
+                byte seriesNumber = (byte)series.SelectToken("id");
+                Uri seriesUri = RemoveNoiseSubstring((string)series.SelectToken("file"), noisePattern);
                 //int fileSize = GetFileSize(seriesUri);
                 int fileSize = 0;
 
@@ -25,65 +25,22 @@ namespace DownloaderSeriesWithSeasonvar.Core
             return seriesList;
         }
 
-        private static Uri ValidateUriSeries(string strUri, string noisePattern)
+        private static Uri RemoveNoiseSubstring(string strUriInBase64, string noisePattern)
         {
-            strUri = strUri.Remove(0, 2);
+            if (noisePattern == "")
+                throw new Exception("Передана пустая строка для поиска шума");
 
-            if (noisePattern != "")
-            {
-                int indexM3 = strUri.IndexOf(noisePattern);
-                if (indexM3 > 0)
-                {
-                    var patternRemoveStr = strUri.Remove(indexM3, noisePattern.Length);
+            strUriInBase64 = strUriInBase64.Remove(0, 2);
+            int startNoiseSubstr = strUriInBase64.IndexOf(noisePattern);
 
-                    string decodedStringBase = Encoding.UTF8.GetString(
-                        Convert.FromBase64String(patternRemoveStr));
+            if (startNoiseSubstr == -1)
+                throw new Exception("Не найдена подстрока с шумом");
 
-                    return new Uri(decodedStringBase);
-                }
-            }
+            var strWithoutNoise = strUriInBase64.Remove(startNoiseSubstr, noisePattern.Length);
+            string decodedStringBase = Encoding.UTF8
+                .GetString(Convert.FromBase64String(strWithoutNoise));
 
-            string surchPattern = "//";
-
-            int startPatternPos = 0;
-            int lastPatternPos = 0;
-
-            if (strUri.Contains(surchPattern))
-                startPatternPos = strUri.IndexOf('/');
-            else
-                throw new Exception("Не найден паттерн начала строки с шумом");
-
-            for (int j = startPatternPos; j <= strUri.Length - 1; j++)
-            {
-                var sdf = strUri.Substring(startPatternPos, j - startPatternPos);
-
-                if (strUri[j] == '=')
-                {
-                    lastPatternPos = j;
-                    break;
-                }
-            }
-
-            if (startPatternPos != lastPatternPos)
-                strUri = strUri.Remove(startPatternPos, lastPatternPos - startPatternPos);
-
-            for (int i = strUri.Length - 3; i >= 0; i--)
-            {
-                if (strUri[i] == '=')
-                    strUri = strUri.Remove(i, 1);
-            }
-
-            byte[] data = Convert.FromBase64String(strUri);
-            string decodedString = Encoding.UTF8.GetString(data);
-
-            //Вырезание индекс файлов (index.m3u8 or )
-            var subString = "index.m3u8 or ";
-            var index = decodedString.IndexOf(subString);
-            if (index > 0)
-                decodedString = decodedString
-                    .Remove(0, index + subString.Length);
-
-            return new Uri(decodedString);
+            return new Uri(decodedStringBase);
         }
     }
 }
