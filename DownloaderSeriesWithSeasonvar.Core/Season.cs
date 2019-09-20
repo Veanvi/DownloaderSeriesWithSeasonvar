@@ -5,7 +5,7 @@ namespace DownloaderSeriesWithSeasonvar.Core
 {
     public class Season
     {
-        private List<Series> seriesList;
+        private List<Episode> seriesList;
 
         public Season(string serealName) : this(serealName, null)
         {
@@ -25,17 +25,17 @@ namespace DownloaderSeriesWithSeasonvar.Core
 
         public string SerealName { get; }
 
-        public List<Series> SeriesList
+        public List<Episode> SeriesList
         {
             get
             {
                 if (seriesList == null)
-                    seriesList = new List<Series>();
+                    seriesList = new List<Episode>();
                 return seriesList;
             }
             set
             {
-                seriesList = new List<Series>();
+                seriesList = new List<Episode>();
                 foreach (var item in value)
                 {
                     AddSeries(item.FileUri, item.FileSize, item.Number);
@@ -69,7 +69,7 @@ namespace DownloaderSeriesWithSeasonvar.Core
 
         internal void AddSeries(Uri fileUri, int fileSize, byte number)
         {
-            SeriesList.Add(new Series($"{SerealName} Серия {number}", fileUri, fileSize, number));
+            SeriesList.Add(new Episode($"{SerealName} Серия {number}", fileUri, fileSize, number));
         }
     }
 }

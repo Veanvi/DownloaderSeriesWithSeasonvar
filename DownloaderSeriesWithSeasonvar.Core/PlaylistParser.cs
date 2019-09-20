@@ -7,10 +7,10 @@ namespace DownloaderSeriesWithSeasonvar.Core
 {
     public static class PlaylistParser
     {
-        public static List<Series> JsonPlaylistConvertToSeasonObject(string playlistJson, string noisePattern = "//b2xvbG8=")
+        public static List<Episode> JsonPlaylistConvertToSeasonObject(string playlistJson, string noisePattern = "//b2xvbG8=")
         {
             var allSeriesJson = JArray.Parse(playlistJson);
-            var seriesList = new List<Series>();
+            var seriesList = new List<Episode>();
 
             foreach (var series in allSeriesJson)
             {
@@ -19,7 +19,7 @@ namespace DownloaderSeriesWithSeasonvar.Core
                 //int fileSize = GetFileSize(seriesUri);
                 int fileSize = 0;
 
-                seriesList.Add(new Series($"Серия seriesNumber", seriesUri, fileSize, seriesNumber));
+                seriesList.Add(new Episode($"Серия seriesNumber", seriesUri, fileSize, seriesNumber));
             }
 
             return seriesList;

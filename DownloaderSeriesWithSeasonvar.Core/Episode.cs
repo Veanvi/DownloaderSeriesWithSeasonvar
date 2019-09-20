@@ -2,9 +2,9 @@
 
 namespace DownloaderSeriesWithSeasonvar.Core
 {
-    public class Series
+    public class Episode
     {
-        internal Series(string name, Uri fileUri, int fileSize, byte number)
+        internal Episode(string name, Uri fileUri, int fileSize, byte number)
         {
             Name = name;
             Number = number;
@@ -22,7 +22,7 @@ namespace DownloaderSeriesWithSeasonvar.Core
             if (obj == null)
                 return false;
 
-            var other = obj as Series;
+            var other = obj as Episode;
 
             if (Name == other.Name &&
                 Number == other.Number &&
