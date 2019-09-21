@@ -7,23 +7,18 @@ namespace DownloaderSeriesWithSeasonvar.Core
     {
         private List<Episode> seriesList;
 
-        public Season(string serealName) : this(serealName, null)
+        internal Season(Uri address) : this(address, null)
         {
         }
 
-        public Season(string serealName, string playlistJson)
+        internal Season(Uri address, string playlistJson)
         {
-            SerealName = serealName;
+            Address = address;
             PlaylistJson = playlistJson;
-            if (PlaylistJson != null)
-            {
-                SeriesList = PlaylistParser.JsonPlaylistConvertToSeasonObject(playlistJson);
-            }
         }
 
+        public Uri Address { get; private set; }
         public string PlaylistJson { get; }
-
-        public string SerealName { get; }
 
         public List<Episode> SeriesList
         {
@@ -61,7 +56,7 @@ namespace DownloaderSeriesWithSeasonvar.Core
             }
 
             if (isSeriesListEquals == true &&
-                SerealName == other.SerealName)
+                PlaylistJson == other.PlaylistJson)
                 return true;
 
             return false;
@@ -69,7 +64,7 @@ namespace DownloaderSeriesWithSeasonvar.Core
 
         internal void AddSeries(Uri fileUri, int fileSize, byte number)
         {
-            SeriesList.Add(new Episode($"{SerealName} Серия {number}", fileUri, fileSize, number));
+            SeriesList.Add(new Episode($"Серия {number}", fileUri, fileSize, number));
         }
     }
 }

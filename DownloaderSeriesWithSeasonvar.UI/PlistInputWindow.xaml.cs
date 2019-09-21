@@ -18,7 +18,7 @@ namespace DownloaderSeriesWithSeasonvar.UI
 
         private void CopySelector_Click(object sender, RoutedEventArgs e)
         {
-            Clipboard.SetText(xpathSelector.Text);
+            Clipboard.SetDataObject(xpathSelector.Text);
         }
 
         private void OkDialog_Click(object sender, RoutedEventArgs e)

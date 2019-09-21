@@ -35,13 +35,14 @@ namespace DownloaderSeriesWithSeasonvar.UI
                 return;
             }
             lbCurrentStageOfWork.Content = "Запущен браузер";
-            var downloaderPlist = new DownloaderSeasonInfo(
-                new Uri(tbUri.Text), (bool)cbTorProxy.IsChecked, (bool)cbHeadlessBrowser.IsChecked);
+
             Season season = null;
 
             try
             {
-                season = await downloaderPlist.DownloadSeasonInfoAsync();
+                season = await new ModelObjectsBuilder(
+                    (bool)cbTorProxy.IsChecked, (bool)cbHeadlessBrowser.IsChecked)
+                    .BuildSeasonAsync(new Uri(tbUri.Text));
             }
             catch (Exception ex)
             {
@@ -62,14 +63,9 @@ namespace DownloaderSeriesWithSeasonvar.UI
             plistWindow.Owner = this;
             if (plistWindow.ShowDialog() == true)
             {
-                if (plistWindow.PatternStr == "")
-                    season = new Season("", plistWindow.PlistStr);
-                else
-                {
-                    season = new Season("");
-                    season.SeriesList = PlaylistParser
-                        .JsonPlaylistConvertToSeasonObject(plistWindow.PlistStr, plistWindow.PatternStr);
-                }
+                var builder = new ModelObjectsBuilder(
+                    (bool)cbTorProxy.IsChecked, (bool)cbHeadlessBrowser.IsChecked);
+                season = builder.BuildSeasonFromJson(plistWindow.PlistStr, plistWindow.PatternStr);
 
                 PrintSeriesUri(season);
             }

@@ -19,7 +19,14 @@ namespace DownloaderSeriesWithSeasonvar.Core
         public bool IsHeadless { get; }
         public Uri SeasonUri { get; }
 
-        public Season DownloadSeasonInfo()
+        public async Task<string> DownloadSeasonInfoAsync()
+        {
+            var task = Task<string>.Factory.StartNew(DownloadSeasonJson);
+            await task;
+            return task.Result;
+        }
+
+        public string DownloadSeasonJson()
         {
             string playlistJson = null;
             string serialName = null;
@@ -61,14 +68,7 @@ namespace DownloaderSeriesWithSeasonvar.Core
                 webDriver.Quit();
             }
 
-            return new Season(serialName, playlistJson);
-        }
-
-        public async Task<Season> DownloadSeasonInfoAsync()
-        {
-            var task = Task<Season>.Factory.StartNew(DownloadSeasonInfo);
-            await task;
-            return task.Result;
+            return playlistJson;
         }
 
         private string GetPlist(IWebDriver webDriver)

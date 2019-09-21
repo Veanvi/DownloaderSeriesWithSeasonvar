@@ -49,10 +49,12 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ModelObjectsBuilderTests.cs" />
+    <Compile Include="Model\TvSeriesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PlaylistParserTest.cs" />
-    <Compile Include="SeriesTest.cs" />
-    <Compile Include="SeasonTest.cs" />
+    <Compile Include="Model\SeriesTest.cs" />
+    <Compile Include="Model\SeasonTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

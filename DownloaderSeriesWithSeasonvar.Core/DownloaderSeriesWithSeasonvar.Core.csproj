@@ -59,10 +59,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DownloaderSeasonInfo.cs" />
+    <Compile Include="ModelObjectsBuilder.cs" />
     <Compile Include="PlaylistParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Season.cs" />
-    <Compile Include="Episode.cs" />
+    <Compile Include="Model\Season.cs" />
+    <Compile Include="Model\Episode.cs" />
+    <Compile Include="Model\TvSeries.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
