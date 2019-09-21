@@ -4,7 +4,7 @@ using System;
 namespace DownloaderSeriesWithSeasonvar.Core.Tests
 {
     [TestClass]
-    public class SeriesTest
+    public class EpisodeTest
     {
         [TestMethod]
         public void Equals_CopyObject_True()
