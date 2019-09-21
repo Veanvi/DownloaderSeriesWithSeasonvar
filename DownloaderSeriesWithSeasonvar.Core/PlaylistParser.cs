@@ -19,7 +19,7 @@ namespace DownloaderSeriesWithSeasonvar.Core
                 //int fileSize = GetFileSize(seriesUri);
                 int fileSize = 0;
 
-                seriesList.Add(new Episode($"Серия seriesNumber", seriesUri, fileSize, seriesNumber));
+                seriesList.Add(new Episode($"Серия {seriesNumber}", seriesUri, fileSize, seriesNumber));
             }
 
             return seriesList;
