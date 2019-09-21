@@ -8,30 +8,14 @@ namespace DownloaderSeriesWithSeasonvar.Core
 {
     internal class TvSeries
     {
-        private List<Season> seasonList;
-
-        public TvSeries(string uri)
+        public TvSeries(string uri, List<Uri> seasonUriList)
         {
             Uri = new Uri(uri);
+            SeasonUriList = seasonUriList;
         }
 
-        public List<Season> SeasonList
-        {
-            get
-            {
-                if (seasonList != null)
-                    return seasonList;
-                seasonList = GetSeasonList();
-                return seasonList;
-            }
-        }
-
-        public List<Uri> SeasonUriList { get; }
+        public List<Season> SeasonList { get; set; }
         public Uri Uri { get; }
-
-        private List<Season> GetSeasonList()
-        {
-            throw new NotImplementedException();
-        }
+        internal List<Uri> SeasonUriList { get; }
     }
 }

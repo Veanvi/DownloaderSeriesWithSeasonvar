@@ -5,12 +5,6 @@ namespace DownloaderSeriesWithSeasonvar.Core
 {
     public class Season
     {
-        private List<Episode> seriesList;
-
-        internal Season(Uri address) : this(address, null)
-        {
-        }
-
         internal Season(Uri address, string playlistJson)
         {
             Address = address;
@@ -20,23 +14,7 @@ namespace DownloaderSeriesWithSeasonvar.Core
         public Uri Address { get; private set; }
         public string PlaylistJson { get; }
 
-        public List<Episode> SeriesList
-        {
-            get
-            {
-                if (seriesList == null)
-                    seriesList = new List<Episode>();
-                return seriesList;
-            }
-            set
-            {
-                seriesList = new List<Episode>();
-                foreach (var item in value)
-                {
-                    AddSeries(item.FileUri, item.FileSize, item.Number);
-                }
-            }
-        }
+        public List<Episode> SeriesList { get; set; }
 
         public override bool Equals(object obj)
         {
