@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace DownloaderSeriesWithSeasonvar.Core
 {
-    internal class TvSeries
+    public class TvSeries
     {
-        public TvSeries(string uri, List<Uri> seasonUriList)
+        internal TvSeries(Uri uri, List<Uri> seasonUriList)
         {
-            Uri = new Uri(uri);
+            Uri = uri;
             SeasonUriList = seasonUriList;
+            SeasonList = new List<Season>();
         }
 
         public List<Season> SeasonList { get; set; }

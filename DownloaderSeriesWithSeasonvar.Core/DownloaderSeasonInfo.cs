@@ -19,7 +19,7 @@ namespace DownloaderSeriesWithSeasonvar.Core
         public bool IsHeadless { get; }
         public Uri SeasonUri { get; }
 
-        public async Task<string> DownloadSeasonInfoAsync()
+        public async Task<string> DownloadInfoAsync()
         {
             var task = Task<string>.Factory.StartNew(DownloadSeasonJson);
             await task;

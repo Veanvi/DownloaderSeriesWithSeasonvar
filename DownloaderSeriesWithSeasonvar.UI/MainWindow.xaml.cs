@@ -55,6 +55,34 @@ namespace DownloaderSeriesWithSeasonvar.UI
             lbCurrentStageOfWork.Content = "Работа закончена";
         }
 
+        private async void GetTvSeries_Click(object sender, RoutedEventArgs e)
+        {
+            tbUriList.Text = "";
+            if (tbUri.Text == "")
+            {
+                lbCurrentStageOfWork.Content = "Введите адрес сереала";
+                return;
+            }
+            lbCurrentStageOfWork.Content = "Пытаюсь получить все ссылки";
+
+            TvSeries tvSeries = null;
+            try
+            {
+                tvSeries = await new ModelObjectsBuilder(
+                    (bool)cbTorProxy.IsChecked, (bool)cbHeadlessBrowser.IsChecked)
+                    .BuildTvSeriesAsync(new Uri(tbUri.Text));
+            }
+            catch (Exception ex)
+            {
+                lbCurrentStageOfWork.Content = ex.Message;
+                return;
+            }
+
+            lbCurrentStageOfWork.Content = "Все ссылки получены";
+            PrintTvSeriesUri(tvSeries);
+            lbCurrentStageOfWork.Content = "Работа закончена";
+        }
+
         private void OpenPlistInputWindow_Click(object sender, RoutedEventArgs e)
         {
             var plistWindow = new PlistInputWindow();
@@ -77,6 +105,15 @@ namespace DownloaderSeriesWithSeasonvar.UI
             var printString = new StringBuilder();
             foreach (var series in season.SeriesList)
                 printString.AppendLine(series.FileUri.ToString());
+            tbUriList.Text = printString.ToString();
+        }
+
+        private void PrintTvSeriesUri(TvSeries tvSeries)
+        {
+            var printString = new StringBuilder();
+            foreach (var season in tvSeries.SeasonList)
+                foreach (var series in season.SeriesList)
+                    printString.AppendLine(series.FileUri.ToString());
             tbUriList.Text = printString.ToString();
         }
     }

@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DownloaderSeasonInfo.cs" />
+    <Compile Include="DownloaderTvSeriesInfo.cs" />
     <Compile Include="ModelObjectsBuilder.cs" />
     <Compile Include="PlaylistParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

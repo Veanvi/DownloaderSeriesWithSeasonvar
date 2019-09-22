@@ -15,15 +15,20 @@
             </Grid.RowDefinitions>
             <StackPanel  Grid.Row="0">
                 <TextBox  Name="tbUri" />
-                <Grid Height="30">
+                <Grid Height="60">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Button Name="GetSeason" Click="GetSeason_Click" Padding="10 0">Получить инфу по сезону</Button>
-                    <Button Grid.Column="2" Name="BtnCopyToClipboard" Click="BtnCopyToClipboard_Click" Padding="10 0">Скопировать все ссылки</Button>
-                    <Button Grid.Column="1" Name="OpenPlistInputWindow" Click="OpenPlistInputWindow_Click" Padding="10 0">Ввести Plist вручную</Button>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Button Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Name="GetTvSeries" Padding="10 0" Click="GetTvSeries_Click">Получить сереал целеком</Button>
+                    <Button Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Name="GetSeason" Click="GetSeason_Click" Padding="10 0">Получить один сезон</Button>
+                    <Button Grid.Column="2" Grid.Row="1" Name="BtnCopyToClipboard" Click="BtnCopyToClipboard_Click" Padding="10 0">Скопировать все ссылки</Button>
+                    <Button Grid.Column="2" Name="OpenPlistInputWindow" Click="OpenPlistInputWindow_Click" Padding="10 0">Ввести Plist вручную</Button>
                 </Grid>
                 <StackPanel Orientation="Horizontal" Name="spSettingsList">
                     <CheckBox Content="Tor Proxy" Name="cbTorProxy" IsChecked="True" Margin="5" />

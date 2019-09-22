@@ -25,7 +25,7 @@ namespace DownloaderSeriesWithSeasonvar.Core
 
             try
             {
-                seasonJson = await downloaderPlist.DownloadSeasonInfoAsync();
+                seasonJson = await downloaderPlist.DownloadInfoAsync();
             }
             catch (Exception ex)
             {
@@ -50,9 +50,26 @@ namespace DownloaderSeriesWithSeasonvar.Core
             return season;
         }
 
-        //public async Task<TvSeries> BuildTvSeriesAsync(Uri address)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public async Task<TvSeries> BuildTvSeriesAsync(Uri address)
+        {
+            var infoDownloader = new DownloaderTvSeriesInfo(
+                address, isEnableTorProxy, isHeadless);
+            List<Uri> seasonAddressList;
+            TvSeries tvSeries;
+
+            try
+            {
+                seasonAddressList = await infoDownloader.DownloadInfoAsync();
+                tvSeries = new TvSeries(address, seasonAddressList);
+                foreach (var seasonUri in tvSeries.SeasonUriList)
+                    tvSeries.SeasonList.Add(await BuildSeasonAsync(seasonUri));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return tvSeries;
+        }
     }
 }
