@@ -19,7 +19,7 @@ namespace DownloaderSeriesWithSeasonvar.Core
             this.isHeadless = isHeadless;
         }
 
-        internal async Task<List<Uri>> DownloadInfoAsync()
+        internal List<Uri> DownloadInfo()
         {
             string seriesName = null;
             List<Uri> seasonUriList = new List<Uri>();
@@ -68,6 +68,13 @@ namespace DownloaderSeriesWithSeasonvar.Core
             }
 
             return seasonUriList;
+        }
+
+        internal async Task<List<Uri>> DownloadInfoAsync()
+        {
+            var task = Task.Factory.StartNew(DownloadInfo);
+            await task;
+            return task.Result;
         }
     }
 }
