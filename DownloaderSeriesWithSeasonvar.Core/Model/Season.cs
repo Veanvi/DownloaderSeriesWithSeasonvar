@@ -38,7 +38,7 @@ namespace DownloaderSeriesWithSeasonvar.Core
 
         internal void AddSeries(Uri fileUri, int fileSize, byte number)
         {
-            EpisodeList.Add(new Episode($"Серия {number}", fileUri, fileSize, number));
+            EpisodeList.Add(new Episode($"Episode {number}", fileUri, fileSize, number));
         }
 
         private string GetEpisodeListFullToString()

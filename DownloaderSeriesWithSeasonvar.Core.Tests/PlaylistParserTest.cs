@@ -31,17 +31,17 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
             correctConvertSeason.EpisodeList = new List<Episode>()
             {
                 new Episode(
-                    "Серия 1",
+                    "Episode 1",
                     new Uri("http://data00-cdn.datalock.ru/fi2lm/22f3519008b08cf2897b989a6177fdee/7f_Muzykalnyj.blog.Doktora.Uzhasnogo.Akt.Pervyj.2008.XviD.TVRip.a1.09.11.12.mp4"),
                     0,
                     1),
                 new Episode(
-                    "Серия 2",
+                    "Episode 2",
                     new Uri("http://data00-cdn.datalock.ru/fi2lm/22f3519008b08cf2897b989a6177fdee/7f_Muzykalnyj.blog.Doktora.Uzhasnogo.Akt.Vtoroj.2008.XviD.TVRip.a1.09.11.12.mp4"),
                     0,
                     2),
                 new Episode(
-                    "Серия 3",
+                    "Episode 3",
                     new Uri("http://data00-cdn.datalock.ru/fi2lm/22f3519008b08cf2897b989a6177fdee/7f_Muzykalnyj.blog.Doktora.Uzhasnogo.Akt.Tretij.2008.XviD.TVRip.a1.09.11.12.mp4"),
                     0,
                     3),
