@@ -29,7 +29,6 @@ namespace DownloaderSeriesWithSeasonvar.Core
         public string DownloadSeasonJson()
         {
             string playlistJson = null;
-            string serialName = null;
             IWebDriver webDriver = null;
 
             try
@@ -58,7 +57,7 @@ namespace DownloaderSeriesWithSeasonvar.Core
 
                 playlistJson = GetPlist(webDriver);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw new Exception("Ошибка загрузки данных");
             }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace DownloaderSeriesWithSeasonvar.Core
 {
@@ -19,18 +20,18 @@ namespace DownloaderSeriesWithSeasonvar.Core
 
         public override bool Equals(object obj)
         {
-            if (obj == null)
-                return false;
+            return ToString().GetHashCode() == obj.GetHashCode();
+        }
 
-            var other = obj as Episode;
+        public override int GetHashCode()
+        {
+            return ToString().GetHashCode();
+        }
 
-            if (Name == other.Name &&
-                Number == other.Number &&
-                FileUri.Equals(other.FileUri) &&
-                FileSize == other.FileSize)
-                return true;
-
-            return false;
+        public override string ToString()
+        {
+            string result = $"Name:{Name}, Number:{Number}, FileSize:{FileSize}, FileUri:{FileUri}";
+            return result;
         }
     }
 }

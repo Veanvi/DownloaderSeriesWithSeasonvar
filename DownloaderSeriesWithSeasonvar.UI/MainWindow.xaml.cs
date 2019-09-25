@@ -103,7 +103,7 @@ namespace DownloaderSeriesWithSeasonvar.UI
         private void PrintSeriesUri(Season season)
         {
             var printString = new StringBuilder();
-            foreach (var series in season.SeriesList)
+            foreach (var series in season.EpisodeList)
                 printString.AppendLine(series.FileUri.ToString());
             tbUriList.Text = printString.ToString();
         }
@@ -112,7 +112,7 @@ namespace DownloaderSeriesWithSeasonvar.UI
         {
             var printString = new StringBuilder();
             foreach (var season in tvSeries.SeasonList)
-                foreach (var series in season.SeriesList)
+                foreach (var series in season.EpisodeList)
                     printString.AppendLine(series.FileUri.ToString());
             tbUriList.Text = printString.ToString();
         }

@@ -41,10 +41,10 @@ namespace DownloaderSeriesWithSeasonvar.Core
             season = new Season(null, seasonJson);
 
             if (noisePattern == "")
-                season.SeriesList = PlaylistParser
+                season.EpisodeList = PlaylistParser
                     .JsonPlaylistConvertToSeasonObject(seasonJson);
             else
-                season.SeriesList = PlaylistParser
+                season.EpisodeList = PlaylistParser
                     .JsonPlaylistConvertToSeasonObject(seasonJson, noisePattern);
 
             return season;

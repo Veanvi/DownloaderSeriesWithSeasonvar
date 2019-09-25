@@ -21,7 +21,6 @@ namespace DownloaderSeriesWithSeasonvar.Core
 
         internal List<Uri> DownloadInfo()
         {
-            string seriesName = null;
             List<Uri> seasonUriList = new List<Uri>();
             IWebDriver webDriver = null;
 
@@ -57,7 +56,7 @@ namespace DownloaderSeriesWithSeasonvar.Core
                     seasonUriList.Add(new Uri(seasonUriStr));
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw new Exception("Ошибка загрузки данных");
             }

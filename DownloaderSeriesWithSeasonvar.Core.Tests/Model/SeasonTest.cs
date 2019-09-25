@@ -13,22 +13,21 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
             // Arrage
             var firstObj = new Season(
                 new Uri("http://seasonvar.ru/serial-17482-Doktor_Kto-11-season.html"), null);
-            firstObj.SeriesList = new List<Episode>()
+            firstObj.EpisodeList = new List<Episode>()
             {
                 new Episode("FirstObj", new Uri("http://FirstObj.ru"), 1, 3)
             };
             var secondObj = new Season(
                 new Uri("http://seasonvar.ru/serial-17482-Doktor_Kto-11-season.html"), null);
-            secondObj.SeriesList = new List<Episode>()
+            secondObj.EpisodeList = new List<Episode>()
             {
                 new Episode("FirstObj", new Uri("http://FirstObj.ru"), 1, 3)
             };
 
             // Act
-            var result = firstObj.Equals(secondObj);
 
             // Assert
-            Assert.IsTrue(result);
+            Assert.AreEqual(firstObj, secondObj);
         }
 
         [TestMethod]
@@ -36,12 +35,12 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
         {
             // Arrage
             var firstObj = new Season(new Uri("http://1.html"), null);
-            firstObj.SeriesList = new List<Episode>()
+            firstObj.EpisodeList = new List<Episode>()
             {
                 new Episode("FirstObj", new Uri("http://FirstObj.ru"), 1, 3)
             };
             var secondObj = new Season(new Uri("http://2.html"), null);
-            secondObj.SeriesList = new List<Episode>()
+            secondObj.EpisodeList = new List<Episode>()
             {
                 new Episode("FirstObj", new Uri("http://FirstObj.ru"), 1, 3),
                 new Episode("SecondObj", new Uri("http://SecondObj.ru"), 2, 4)
