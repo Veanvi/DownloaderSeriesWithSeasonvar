@@ -32,8 +32,8 @@ namespace DownloaderSeriesWithSeasonvar.UI
             var isHeadless = (bool)cbHeadlessBrowser.IsChecked;
 
             var objectBuilder = new ModelObjectsBuilder(
-                new SeasonInfoDownloader(isHeadless, isHeadless),
-                new TvSeriesInfoDownloader(isHeadless, isHeadless));
+                new SeasonInfoDownloader(isTorProxy, isHeadless),
+                new TvSeriesInfoDownloader(isTorProxy, isHeadless));
             return objectBuilder;
         }
 

@@ -9,17 +9,25 @@ namespace DownloaderSeriesWithSeasonvar.Core
     {
         public static List<Episode> JsonPlaylistConvertToSeasonObject(string playlistJson, string noisePattern = "//b2xvbG8=")
         {
-            var allSeriesJson = JArray.Parse(playlistJson);
+            JArray allSeriesJson = null;
             var seriesList = new List<Episode>();
 
-            foreach (var series in allSeriesJson)
+            try
             {
-                byte seriesNumber = (byte)series.SelectToken("id");
-                Uri seriesUri = RemoveNoiseSubstring((string)series.SelectToken("file"), noisePattern);
-                //int fileSize = GetFileSize(seriesUri);
-                int fileSize = 0;
+                allSeriesJson = JArray.Parse(playlistJson);
+                foreach (var series in allSeriesJson)
+                {
+                    byte seriesNumber = (byte)series.SelectToken("id");
+                    Uri seriesUri = RemoveNoiseSubstring((string)series.SelectToken("file"), noisePattern);
+                    //int fileSize = GetFileSize(seriesUri);
+                    int fileSize = 0;
 
-                seriesList.Add(new Episode($"Серия {seriesNumber}", seriesUri, fileSize, seriesNumber));
+                    seriesList.Add(new Episode($"Серия {seriesNumber}", seriesUri, fileSize, seriesNumber));
+                }
+            }
+            catch (Exception)
+            {
+                throw new Exception("Ошибка парсинга плейлиста из Json.");
             }
 
             return seriesList;
