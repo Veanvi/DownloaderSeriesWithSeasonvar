@@ -30,7 +30,7 @@ namespace DownloaderSeriesWithSeasonvar.Core
 
         public override string ToString()
         {
-            string result = $"Name:{Name}, Number:{Number}, FileSize:{FileSize}, FileUri:{FileUri}";
+            string result = $"[Name:{Name}, Number:{Number}, FileSize:{FileSize}, FileUri:{FileUri.GetHashCode()}]";
             return result;
         }
     }

@@ -33,7 +33,7 @@ namespace DownloaderSeriesWithSeasonvar.Core
 
         public override string ToString()
         {
-            return $"Address:{Address}, PlaylistJsonHashCode:{PlaylistJson.GetHashCode()}, EpisodeListHashCode:{GetEpisodeListHashCode()}";
+            return $"Address:{Address}, PlaylistJsonHashCode:{PlaylistJson.GetHashCode()}, EpisodeListHashCode:{GetEpisodeListFullToString()}";
         }
 
         internal void AddSeries(Uri fileUri, int fileSize, byte number)
@@ -41,11 +41,11 @@ namespace DownloaderSeriesWithSeasonvar.Core
             EpisodeList.Add(new Episode($"Серия {number}", fileUri, fileSize, number));
         }
 
-        private string GetEpisodeListHashCode()
+        private string GetEpisodeListFullToString()
         {
             var result = string.Empty;
             foreach (var item in EpisodeList)
-                result += item.GetHashCode().ToString();
+                result += item.ToString();
             return result;
         }
     }
