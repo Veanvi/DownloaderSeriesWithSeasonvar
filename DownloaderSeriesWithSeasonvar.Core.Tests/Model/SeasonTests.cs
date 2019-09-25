@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace DownloaderSeriesWithSeasonvar.Core.Tests
 {
     [TestClass]
-    public class SeasonTest
+    public class SeasonTests
     {
         [TestMethod]
         public void Equals_CopyObject_True()

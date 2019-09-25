@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace DownloaderSeriesWithSeasonvar.Core.Tests
 {
     [TestClass]
-    public class PlaylistParserTest
+    public class PlaylistParserTests
     {
         private Season correctConvertSeason;
         private string correctJsonPlaylist;
