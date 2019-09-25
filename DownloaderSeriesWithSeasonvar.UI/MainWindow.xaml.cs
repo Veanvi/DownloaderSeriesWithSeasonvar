@@ -26,6 +26,17 @@ namespace DownloaderSeriesWithSeasonvar.UI
             tbUriList.Text = "";
         }
 
+        private ModelObjectsBuilder GetModelObjectsBuilder()
+        {
+            var isTorProxy = (bool)cbTorProxy.IsChecked;
+            var isHeadless = (bool)cbHeadlessBrowser.IsChecked;
+
+            var objectBuilder = new ModelObjectsBuilder(
+                new SeasonInfoDownloader(isHeadless, isHeadless),
+                new TvSeriesInfoDownloader(isHeadless, isHeadless));
+            return objectBuilder;
+        }
+
         private async void GetSeason_Click(object sender, RoutedEventArgs e)
         {
             tbUriList.Text = "";
@@ -40,9 +51,8 @@ namespace DownloaderSeriesWithSeasonvar.UI
 
             try
             {
-                season = await new ModelObjectsBuilder(
-                    (bool)cbTorProxy.IsChecked, (bool)cbHeadlessBrowser.IsChecked)
-                    .BuildSeasonAsync(new Uri(tbUri.Text));
+                ModelObjectsBuilder objectBuilder = GetModelObjectsBuilder();
+                season = await objectBuilder.BuildSeasonAsync(new Uri(tbUri.Text));
             }
             catch (Exception ex)
             {
@@ -68,9 +78,8 @@ namespace DownloaderSeriesWithSeasonvar.UI
             TvSeries tvSeries = null;
             try
             {
-                tvSeries = await new ModelObjectsBuilder(
-                    (bool)cbTorProxy.IsChecked, (bool)cbHeadlessBrowser.IsChecked)
-                    .BuildTvSeriesAsync(new Uri(tbUri.Text));
+                ModelObjectsBuilder objectBuilder = GetModelObjectsBuilder();
+                tvSeries = await objectBuilder.BuildTvSeriesAsync(new Uri(tbUri.Text));
             }
             catch (Exception ex)
             {
@@ -91,9 +100,8 @@ namespace DownloaderSeriesWithSeasonvar.UI
             plistWindow.Owner = this;
             if (plistWindow.ShowDialog() == true)
             {
-                var builder = new ModelObjectsBuilder(
-                    (bool)cbTorProxy.IsChecked, (bool)cbHeadlessBrowser.IsChecked);
-                season = builder.BuildSeasonFromJson(plistWindow.PlistStr, plistWindow.PatternStr);
+                ModelObjectsBuilder objectBuilder = GetModelObjectsBuilder();
+                season = objectBuilder.BuildSeasonFromJson(plistWindow.PlistStr, plistWindow.PatternStr);
 
                 PrintSeriesUri(season);
             }

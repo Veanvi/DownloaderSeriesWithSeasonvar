@@ -6,6 +6,10 @@ namespace DownloaderSeriesWithSeasonvar.Core
 {
     public class Season
     {
+        internal Season(Uri address) : this(address, string.Empty)
+        {
+        }
+
         internal Season(Uri address, string playlistJson)
         {
             Address = address;

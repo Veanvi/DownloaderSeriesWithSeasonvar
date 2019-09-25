@@ -8,31 +8,36 @@ namespace DownloaderSeriesWithSeasonvar.Core
 {
     public class ModelObjectsBuilder
     {
-        private readonly bool isEnableTorProxy;
-        private readonly bool isHeadless;
+        private readonly IInfoDownloader<Episode> seasonInfoDownloader;
+        private readonly IInfoDownloader<Uri> tvSeriesInfoDownloader;
 
-        public ModelObjectsBuilder(bool enableTorProxy, bool headless)
+        public ModelObjectsBuilder(
+            IInfoDownloader<Episode> seasonInfoDownloader,
+            IInfoDownloader<Uri> tvSeriesInfoDownloader)
         {
-            isEnableTorProxy = enableTorProxy;
-            isHeadless = headless;
+            this.seasonInfoDownloader = seasonInfoDownloader;
+            this.tvSeriesInfoDownloader = tvSeriesInfoDownloader;
         }
 
         public async Task<Season> BuildSeasonAsync(Uri address)
         {
-            var downloaderPlist = new DownloaderSeasonInfo(
-                address, isEnableTorProxy, isHeadless);
-            string seasonJson = "";
+            List<Episode> episodeList;
 
             try
             {
-                seasonJson = await downloaderPlist.DownloadInfoAsync();
+                episodeList = await seasonInfoDownloader.GetInfoListAsync(address);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
 
-            return BuildSeasonFromJson(seasonJson);
+            var season = new Season(address)
+            {
+                EpisodeList = episodeList
+            };
+
+            return season;
         }
 
         public Season BuildSeasonFromJson(string seasonJson, string noisePattern = "")
@@ -52,14 +57,12 @@ namespace DownloaderSeriesWithSeasonvar.Core
 
         public async Task<TvSeries> BuildTvSeriesAsync(Uri address)
         {
-            var infoDownloader = new DownloaderTvSeriesInfo(
-                address, isEnableTorProxy, isHeadless);
             List<Uri> seasonAddressList;
             TvSeries tvSeries;
 
             try
             {
-                seasonAddressList = await infoDownloader.DownloadInfoAsync();
+                seasonAddressList = await tvSeriesInfoDownloader.GetInfoListAsync(address);
                 tvSeries = new TvSeries(address, seasonAddressList);
                 foreach (var seasonUri in tvSeries.SeasonUriList)
                     tvSeries.SeasonList.Add(await BuildSeasonAsync(seasonUri));
