@@ -11,6 +11,17 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
         private string correctJsonPlaylist;
 
         [TestMethod]
+        [ExpectedException(typeof(Exception), "Передана пустая строка для поиска шума")]
+        public void JsonPlaylistConvertToSeasonObject_EmptyJsonStr_Exception()
+        {
+            // Arrage
+            var notCorrectJson = "";
+            // Act
+            PlaylistParser.JsonPlaylistConvertToSeasonObject(notCorrectJson);
+            // Assert - Expected Exception
+        }
+
+        [TestMethod]
         public void JsonPlaylistConvertToSeasonObject_JsonString_CorrectSeasonObject()
         {
             // Arrage
@@ -21,6 +32,28 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
             result.EpisodeList = seriesList;
             // Assert
             Assert.AreEqual(correctConvertSeason, result);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception), "Ошибка парсинга плейлиста из Json.")]
+        public void JsonPlaylistConvertToSeasonObject_NotCorrectJsonString_Exception()
+        {
+            // Arrage
+            var notCorrectJson = "[{\"title\":\"1 \\u0441\\u0435\\u0440\\u0438\\u044f SD\r\n\",\"file\":\"#2aHR0cDovL2R";
+            // Act
+            PlaylistParser.JsonPlaylistConvertToSeasonObject(notCorrectJson);
+            // Assert - Expected Exception
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception), "Не найдена подстрока с шумом")]
+        public void JsonPlaylistConvertToSeasonObject_NotCorrectNoisePattern_Exception()
+        {
+            // Arrage
+            var noisePattern = "Empty";
+            // Act
+            PlaylistParser.JsonPlaylistConvertToSeasonObject(correctJsonPlaylist, noisePattern);
+            // Assert - Expected Exception
         }
 
         [TestInitialize()]

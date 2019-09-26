@@ -8,7 +8,22 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
     public class SeasonTests
     {
         [TestMethod]
-        public void Equals_CopyObject_True()
+        public void AddSeries_SeriesObject_SeriesAddedToList()
+        {
+            // Arrage
+            var season = new Season(new Uri("http://1.html"), null);
+            // Act
+            season.AddSeries(season.Address, 4, 1);
+            season.AddSeries(season.Address, 6, 2);
+            // Assert
+            var listCount = season.EpisodeList.Count;
+            Assert.AreEqual(2, listCount);
+            var checkSizeSum = season.EpisodeList[0].FileSize + season.EpisodeList[1].FileSize;
+            Assert.AreEqual(10, checkSizeSum);
+        }
+
+        [TestMethod]
+        public void Equals_CopyOfObject_Equal()
         {
             // Arrage
             var firstObj = new Season(
@@ -31,7 +46,7 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
         }
 
         [TestMethod]
-        public void Equals_NotCopyObject_False()
+        public void Equals_NotCopyOfObject_NotEqual()
         {
             // Arrage
             var firstObj = new Season(new Uri("http://1.html"), null);
