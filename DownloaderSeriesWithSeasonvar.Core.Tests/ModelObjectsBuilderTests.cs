@@ -15,7 +15,6 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
         private IInfoDownloader<Uri> subInfoDownloaderUri;
 
         [TestMethod]
-        [ExpectedException(typeof(Exception), "TestMessage")]
         public async Task BuildSeasonAsync_GenerateException_ExpectException()
         {
             // Arrage
@@ -25,8 +24,10 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
 
             var modelObjectsBuilder = new ModelObjectsBuilder(subIDEpisode, subInfoDownloaderUri);
             // Act
-            var result = await modelObjectsBuilder.BuildSeasonAsync(new Uri("https://test.com"));
-            // Assert - Expected Exception
+            var ex = await Assert.ThrowsExceptionAsync<Exception>(
+                async () => { await modelObjectsBuilder.BuildSeasonAsync(new Uri("https://test.com")); });
+            // Assert
+            StringAssert.Contains(ex.Message, "TestMessage");
         }
 
         [TestMethod]
@@ -47,8 +48,10 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
             Assert.AreEqual(subEpisodeList.First(), result.EpisodeList.First());
         }
 
-        [TestMethod]
-        public void BuildSeasonFromJson_CorrectJson_ReturnCorrectObject()
+        [DataTestMethod]
+        [DataRow("")]
+        [DataRow("//b2xvbG8=")]
+        public void BuildSeasonFromJson_CastomNoisePattern_ReturnCorrectObject(string noisePattern)
         {
             // Arrange
             var modelObjectsBuilder = this.CreateModelObjectsBuilder();
@@ -75,14 +78,13 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
             };
 
             // Act
-            var result = modelObjectsBuilder.BuildSeasonFromJson(correctJsonPlaylist);
+            var result = modelObjectsBuilder.BuildSeasonFromJson(correctJsonPlaylist, noisePattern);
 
             // Assert
             Assert.AreEqual(correctConvertSeason, result);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(Exception), "TestMessage")]
         public async Task BuildTvSeriesAsync_GenerateException_ExpectException()
         {
             // Arrage
@@ -92,12 +94,14 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
 
             var modelObjectsBuilder = new ModelObjectsBuilder(subInfoDownloaderEpisode, subIDUri);
             // Act
-            var result = await modelObjectsBuilder.BuildTvSeriesAsync(new Uri("https://test.com"));
+            var ex = await Assert.ThrowsExceptionAsync<Exception>(
+                async () => { await modelObjectsBuilder.BuildTvSeriesAsync(new Uri("https://test.com")); });
             // Assert - Expected Exception
+            StringAssert.Contains(ex.Message, "TestMessage");
         }
 
         [TestMethod]
-        public async Task BuildTvSeriesAsync_StateUnderTest_ExpectedBehavior()
+        public async Task BuildTvSeriesAsync_GettingCorrectobject_Correctobject()
         {
             // Arrange
             var subIDUri = Substitute.For<IInfoDownloader<Uri>>();

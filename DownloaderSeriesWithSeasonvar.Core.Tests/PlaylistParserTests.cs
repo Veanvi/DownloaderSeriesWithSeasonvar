@@ -11,14 +11,15 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
         private string correctJsonPlaylist;
 
         [TestMethod]
-        [ExpectedException(typeof(Exception), "Передана пустая строка для поиска шума")]
-        public void JsonPlaylistConvertToSeasonObject_EmptyJsonStr_Exception()
+        public void JsonPlaylistConvertToSeasonObject_EmptyNoisePattern_Exception()
         {
             // Arrage
-            var notCorrectJson = "";
+            var noisePattern = "";
             // Act
-            PlaylistParser.JsonPlaylistConvertToSeasonObject(notCorrectJson);
-            // Assert - Expected Exception
+            var exception = Assert.ThrowsException<Exception>(
+                () => PlaylistParser.JsonPlaylistConvertToSeasonObject(correctJsonPlaylist, noisePattern));
+            // Assert
+            StringAssert.Contains(exception.Message, "Ошибка парсинга плейл");
         }
 
         [TestMethod]
@@ -35,25 +36,27 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(Exception), "Ошибка парсинга плейлиста из Json.")]
         public void JsonPlaylistConvertToSeasonObject_NotCorrectJsonString_Exception()
         {
             // Arrage
             var notCorrectJson = "[{\"title\":\"1 \\u0441\\u0435\\u0440\\u0438\\u044f SD\r\n\",\"file\":\"#2aHR0cDovL2R";
             // Act
-            PlaylistParser.JsonPlaylistConvertToSeasonObject(notCorrectJson);
-            // Assert - Expected Exception
+            var ex = Assert.ThrowsException<Exception>(
+                () => { PlaylistParser.JsonPlaylistConvertToSeasonObject(notCorrectJson); });
+            // Assert
+            StringAssert.Contains(ex.Message, "Ошибка парсинга плейлиста");
         }
 
         [TestMethod]
-        [ExpectedException(typeof(Exception), "Не найдена подстрока с шумом")]
         public void JsonPlaylistConvertToSeasonObject_NotCorrectNoisePattern_Exception()
         {
             // Arrage
             var noisePattern = "Empty";
             // Act
-            PlaylistParser.JsonPlaylistConvertToSeasonObject(correctJsonPlaylist, noisePattern);
-            // Assert - Expected Exception
+            var ex = Assert.ThrowsException<Exception>(
+                () => { PlaylistParser.JsonPlaylistConvertToSeasonObject(correctJsonPlaylist, noisePattern); });
+            // Assert
+            StringAssert.Contains(ex.Message, "Ошибка парсинга плейлиста");
         }
 
         [TestInitialize()]
