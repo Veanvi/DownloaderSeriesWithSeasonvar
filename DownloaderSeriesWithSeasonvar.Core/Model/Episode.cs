@@ -5,7 +5,7 @@ namespace DownloaderSeriesWithSeasonvar.Core
 {
     public class Episode
     {
-        internal Episode(string name, Uri fileUri, int fileSize, byte number)
+        internal Episode(string name, Uri fileUri, int fileSize, int number)
         {
             Name = name;
             Number = number;
@@ -16,7 +16,7 @@ namespace DownloaderSeriesWithSeasonvar.Core
         public int FileSize { get; }
         public Uri FileUri { get; }
         public string Name { get; }
-        public byte Number { get; }
+        public int Number { get; }
 
         public override bool Equals(object obj)
         {

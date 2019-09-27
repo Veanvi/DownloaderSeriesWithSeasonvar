@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DownloaderSeriesWithSeasonvar.Core
 {
-    public class TvSeriesInfoDownloader : IInfoDownloader<Uri>
+    public class TvSeriesInfoDownloader : IInfoDownloader
     {
         private Uri lastInfoRequestAddress;
         private string originalName;

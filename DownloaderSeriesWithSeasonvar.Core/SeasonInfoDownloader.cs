@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DownloaderSeriesWithSeasonvar.Core
 {
-    public class SeasonInfoDownloader : IInfoDownloader<Episode>
+    public class SeasonInfoDownloader : IInfoDownloader
     {
         private Uri lastInfoRequestAddress;
         private string originalName;
@@ -21,7 +21,7 @@ namespace DownloaderSeriesWithSeasonvar.Core
         public bool IsEnableTorProxy { get; }
         public bool IsHeadless { get; }
 
-        public List<Episode> GetInfoList(Uri address)
+        public List<Uri> GetInfoList(Uri address)
         {
             lastInfoRequestAddress = address;
             string playlistJson = null;
@@ -44,10 +44,17 @@ namespace DownloaderSeriesWithSeasonvar.Core
                 webDriver.Quit();
             }
 
-            return PlaylistParser.JsonPlaylistConvertToSeasonObject(playlistJson);
+            var uriList = new List<Uri>();
+
+            foreach (var item in PlaylistParser.JsonPlaylistConvertToSeasonObject(playlistJson))
+            {
+                uriList.Add(item.FileUri);
+            }
+
+            return uriList;
         }
 
-        public async Task<List<Episode>> GetInfoListAsync(Uri address)
+        public async Task<List<Uri>> GetInfoListAsync(Uri address)
         {
             var task = Task.Factory.StartNew(() => GetInfoList(address));
             await task;

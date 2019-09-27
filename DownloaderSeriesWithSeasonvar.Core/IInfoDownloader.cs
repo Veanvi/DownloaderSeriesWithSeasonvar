@@ -4,14 +4,14 @@ using System.Threading.Tasks;
 
 namespace DownloaderSeriesWithSeasonvar.Core
 {
-    public interface IInfoDownloader<T>
+    public interface IInfoDownloader
     {
         bool IsEnableTorProxy { get; }
         bool IsHeadless { get; }
 
-        List<T> GetInfoList(Uri address);
+        List<Uri> GetInfoList(Uri address);
 
-        Task<List<T>> GetInfoListAsync(Uri address);
+        Task<List<Uri>> GetInfoListAsync(Uri address);
 
         string GetOriginalName(Uri address);
 

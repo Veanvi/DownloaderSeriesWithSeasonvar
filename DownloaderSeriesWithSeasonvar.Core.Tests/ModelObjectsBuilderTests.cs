@@ -11,14 +11,14 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
     [TestClass]
     public class ModelObjectsBuilderTests
     {
-        private IInfoDownloader<Episode> subInfoDownloaderEpisode;
-        private IInfoDownloader<Uri> subInfoDownloaderUri;
+        private IInfoDownloader subInfoDownloaderEpisode;
+        private IInfoDownloader subInfoDownloaderUri;
 
         [TestMethod]
         public async Task BuildSeasonAsync_GenerateException_ExpectException()
         {
             // Arrage
-            var subIDEpisode = Substitute.For<IInfoDownloader<Episode>>();
+            var subIDEpisode = Substitute.For<IInfoDownloader>();
             subIDEpisode.GetInfoList(Arg.Any<Uri>()).Returns(x => { throw new Exception("TestMessage"); });
             subIDEpisode.GetInfoListAsync(Arg.Any<Uri>()).Returns(x => subIDEpisode.GetInfoList(null));
 
@@ -34,10 +34,10 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
         public async Task BuildSeasonAsync_GettingCorrectobject_Correctobject()
         {
             // Arrange
-            var subIDEpisode = Substitute.For<IInfoDownloader<Episode>>();
-            var subEpisodeList = new List<Episode>()
+            var subIDEpisode = Substitute.For<IInfoDownloader>();
+            var subEpisodeList = new List<Uri>()
             {
-                new Episode("test", new Uri("https://test.com"), 42, 42)
+                new Uri("https://test1.com")
             };
             subIDEpisode.GetInfoListAsync(Arg.Any<Uri>()).Returns(subEpisodeList);
             var modelObjectsBuilder = new ModelObjectsBuilder(subIDEpisode, subInfoDownloaderUri);
@@ -45,7 +45,7 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
             var result = await modelObjectsBuilder.BuildSeasonAsync(new Uri("https://test.com"));
             // Assert
             Assert.AreEqual(1, result.EpisodeList.Count);
-            Assert.AreEqual(subEpisodeList.First(), result.EpisodeList.First());
+            Assert.AreEqual(subEpisodeList.First(), result.EpisodeList.First().FileUri);
         }
 
         [DataTestMethod]
@@ -88,7 +88,7 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
         public async Task BuildTvSeriesAsync_GenerateException_ExpectException()
         {
             // Arrage
-            var subIDUri = Substitute.For<IInfoDownloader<Uri>>();
+            var subIDUri = Substitute.For<IInfoDownloader>();
             subIDUri.GetInfoList(Arg.Any<Uri>()).Returns(x => { throw new Exception("TestMessage"); });
             subIDUri.GetInfoListAsync(Arg.Any<Uri>()).Returns(x => subIDUri.GetInfoList(null));
 
@@ -104,15 +104,16 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
         public async Task BuildTvSeriesAsync_GettingCorrectobject_Correctobject()
         {
             // Arrange
-            var subIDUri = Substitute.For<IInfoDownloader<Uri>>();
+            var subIDTvSeries = Substitute.For<IInfoDownloader>();
             var subUriList = new List<Uri>()
             {
                 new Uri("https://test1.com"),
                 new Uri("https://test2.com"),
                 new Uri("https://test3.com")
             };
-            subIDUri.GetInfoListAsync(Arg.Any<Uri>()).Returns(subUriList);
-            var modelObjectsBuilder = new ModelObjectsBuilder(subInfoDownloaderEpisode, subIDUri);
+            subIDTvSeries.GetInfoListAsync(Arg.Any<Uri>()).Returns(subUriList);
+            subIDTvSeries.GetOriginalNameAsync(Arg.Any<Uri>()).Returns("TestName");
+            var modelObjectsBuilder = new ModelObjectsBuilder(subInfoDownloaderEpisode, subIDTvSeries);
             // Act
             var result = await modelObjectsBuilder.BuildTvSeriesAsync(new Uri("https://test.com"));
             // Assert
@@ -122,8 +123,11 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
         [TestInitialize]
         public void TestInitialize()
         {
-            this.subInfoDownloaderEpisode = Substitute.For<IInfoDownloader<Episode>>();
-            this.subInfoDownloaderUri = Substitute.For<IInfoDownloader<Uri>>();
+            this.subInfoDownloaderEpisode = Substitute.For<IInfoDownloader>();
+            this.subInfoDownloaderUri = Substitute.For<IInfoDownloader>();
+
+            subInfoDownloaderEpisode.GetInfoListAsync(Arg.Any<Uri>())
+                .Returns(Task.FromResult(new List<Uri>()));
         }
 
         private ModelObjectsBuilder CreateModelObjectsBuilder()

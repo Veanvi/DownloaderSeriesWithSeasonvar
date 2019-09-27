@@ -8,12 +8,12 @@ namespace DownloaderSeriesWithSeasonvar.Core
 {
     public class ModelObjectsBuilder
     {
-        private readonly IInfoDownloader<Episode> seasonInfoDownloader;
-        private readonly IInfoDownloader<Uri> tvSeriesInfoDownloader;
+        private readonly IInfoDownloader seasonInfoDownloader;
+        private readonly IInfoDownloader tvSeriesInfoDownloader;
 
         public ModelObjectsBuilder(
-            IInfoDownloader<Episode> seasonInfoDownloader,
-            IInfoDownloader<Uri> tvSeriesInfoDownloader)
+            IInfoDownloader seasonInfoDownloader,
+            IInfoDownloader tvSeriesInfoDownloader)
         {
             this.seasonInfoDownloader = seasonInfoDownloader;
             this.tvSeriesInfoDownloader = tvSeriesInfoDownloader;
@@ -21,15 +21,24 @@ namespace DownloaderSeriesWithSeasonvar.Core
 
         public async Task<Season> BuildSeasonAsync(Uri address)
         {
-            List<Episode> episodeList;
+            List<Uri> episodeAddressList;
+            string seasonName;
 
             try
             {
-                episodeList = await seasonInfoDownloader.GetInfoListAsync(address);
+                episodeAddressList = await seasonInfoDownloader.GetInfoListAsync(address);
+                seasonName = await seasonInfoDownloader.GetOriginalNameAsync(address);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
+            }
+
+            var episodeList = new List<Episode>();
+            for (int i = 0; i < episodeAddressList.Count; i++)
+            {
+                var episode = new Episode(seasonName, episodeAddressList[i], 0, i);
+                episodeList.Add(episode);
             }
 
             var season = new Season(address)

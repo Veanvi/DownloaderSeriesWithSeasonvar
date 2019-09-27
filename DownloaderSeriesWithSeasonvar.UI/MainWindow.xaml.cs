@@ -14,7 +14,7 @@ namespace DownloaderSeriesWithSeasonvar.UI
         {
             InitializeComponent();
 #if DEBUG
-            tbUri.Text = "http://seasonvar.ru/serial-17482-Doktor_Kto-11-season.html";
+            tbUri.Text = "http://seasonvar.ru/serial-23427-Million_melochej-2-season.html";
 #endif
         }
 
