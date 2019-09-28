@@ -38,14 +38,13 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
             subWebRequester.GetWebPageSourceAsync(Arg.Any<string>())
                 .Returns(Task.FromResult(""));
             var seasonInfoDownloader = new SeasonInfoDownloader(subWebRequeter);
-            var expectMessage = "Ошибка загрузки данных";
 
             // Act
+
+            // Assert
             var result = await Assert.ThrowsExceptionAsync<Exception>(
                  () => seasonInfoDownloader.GetInfoListAsync(
                     new Uri("http://seasonvar.ru")));
-            // Assert
-            StringAssert.Contains(result.Message, expectMessage);
         }
 
         [TestMethod]
@@ -89,14 +88,13 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
             subWebRequester.GetWebPageSourceAsync(Arg.Any<string>())
                 .Returns(Task.FromResult(""));
             var seasonInfoDownloader = new SeasonInfoDownloader(subWebRequeter);
-            var expectMessage = "Ошибка загрузки данных";
 
             // Act
+
+            // Assert
             var result = await Assert.ThrowsExceptionAsync<Exception>(
                  () => seasonInfoDownloader.GetOriginalNameAsync(
                     new Uri("http://seasonvar.ru")));
-            // Assert
-            StringAssert.Contains(result.Message, expectMessage);
         }
 
         [TestMethod]
