@@ -10,11 +10,16 @@ namespace DownloaderSeriesWithSeasonvar.UI
     /// </summary>
     public partial class MainWindow : Window
     {
+        private IWebRequester webRequester;
+
         public MainWindow()
         {
+            // TODO: Пофиксить зависание UI при загрузке страницы
+            // TODO: Выяснить почему при сборке созона в объект не добавляется PlaylistJson
+
             InitializeComponent();
 #if DEBUG
-            tbUri.Text = "http://seasonvar.ru/serial-23427-Million_melochej-2-season.html";
+            tbUri.Text = "http://seasonvar.ru/serial-5583-Inspektor_Klot.html";
 #endif
         }
 
@@ -31,9 +36,12 @@ namespace DownloaderSeriesWithSeasonvar.UI
             var isTorProxy = (bool)cbTorProxy.IsChecked;
             var isHeadless = (bool)cbHeadlessBrowser.IsChecked;
 
+            if (webRequester == null)
+                webRequester = new SeleniumWebRequester(isTorProxy, isHeadless);
+
             var objectBuilder = new ModelObjectsBuilder(
-                new SeasonInfoDownloader(isTorProxy, isHeadless),
-                new TvSeriesInfoDownloader(isTorProxy, isHeadless));
+                new SeasonInfoDownloader(webRequester),
+                new TvSeriesInfoDownloader(webRequester));
             return objectBuilder;
         }
 

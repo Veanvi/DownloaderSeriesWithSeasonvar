@@ -1,8 +1,8 @@
-﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AngleSharp;
+using AngleSharp.Dom;
 
 namespace DownloaderSeriesWithSeasonvar.Core
 {
@@ -11,37 +11,33 @@ namespace DownloaderSeriesWithSeasonvar.Core
         private Uri lastInfoRequestAddress;
         private string originalName;
 
-        public SeasonInfoDownloader(bool enableTorProxy = false, bool headless = true)
+        public SeasonInfoDownloader(IWebRequester webRequester)
         {
-            IsEnableTorProxy = enableTorProxy;
-            IsHeadless = headless;
             lastInfoRequestAddress = new Uri("http://seasonvar.ru");
+            WebRequester = webRequester;
         }
 
-        public bool IsEnableTorProxy { get; }
-        public bool IsHeadless { get; }
+        public IWebRequester WebRequester { get; }
 
         public List<Uri> GetInfoList(Uri address)
         {
+            return GetInfoListAsync(address).Result;
+        }
+
+        public async Task<List<Uri>> GetInfoListAsync(Uri address)
+        {
             lastInfoRequestAddress = address;
             string playlistJson = null;
-            IWebDriver webDriver = null;
 
             try
             {
-                webDriver = InitializeWebDriver();
-                webDriver.Navigate().GoToUrl(address);
-                originalName = GetNameFromPage(webDriver);
-                playlistJson = GetPlist(webDriver);
+                string pageSource = WebRequester.GetWebPageSource(address.ToString());
+                originalName = await GetNameFromPageAsync(pageSource);
+                playlistJson = await GetPlistAsync(pageSource);
             }
             catch (Exception)
             {
                 throw new Exception("Ошибка загрузки данных");
-            }
-            finally
-            {
-                webDriver.Close();
-                webDriver.Quit();
             }
 
             var uriList = new List<Uri>();
@@ -54,89 +50,62 @@ namespace DownloaderSeriesWithSeasonvar.Core
             return uriList;
         }
 
-        public async Task<List<Uri>> GetInfoListAsync(Uri address)
+        public string GetOriginalName(Uri address)
         {
-            var task = Task.Factory.StartNew(() => GetInfoList(address));
-            await task;
-            return task.Result;
+            return GetOriginalNameAsync(address).Result;
         }
 
-        public string GetOriginalName(Uri address)
+        public async Task<string> GetOriginalNameAsync(Uri address)
         {
             if (!string.IsNullOrEmpty(originalName) &
                 address.Equals(lastInfoRequestAddress))
                 return originalName;
 
-            IWebDriver webDriver = null;
             try
             {
-                webDriver = InitializeWebDriver();
-                webDriver.Navigate().GoToUrl(address);
-                originalName = GetNameFromPage(webDriver);
+                var pageSource = WebRequester.GetWebPageSource(address.ToString());
+                originalName = await GetNameFromPageAsync(pageSource);
             }
             catch (Exception)
             {
                 throw new Exception("Ошибка загрузки данных");
             }
-            finally
-            {
-                webDriver.Close();
-                webDriver.Quit();
-            }
 
             return originalName;
         }
 
-        public async Task<string> GetOriginalNameAsync(Uri address)
+        private async Task<IDocument> GetDocumentAsync(string pageSource)
         {
-            var task = Task.Factory.StartNew(() => GetOriginalName(address));
-            await task;
-            return task.Result;
+            var context = BrowsingContext.New(Configuration.Default);
+            return await context.OpenAsync(req => req.Content(pageSource));
         }
 
-        private string GetNameFromPage(IWebDriver webDriver)
+        private async Task<string> GetNameFromPageAsync(string pageSource)
         {
-            string originalName = webDriver.FindElement(By
-                    .CssSelector("div.pgs-sinfo-info > div:nth-child(2) > span"))
-                    .Text;
+            var context = BrowsingContext.New(Configuration.Default);
+            var document = await context.OpenAsync(req => req.Content(pageSource));
+            string originalName = document
+                .QuerySelector("div.pgs-sinfo-info > div:nth-child(3) > span")
+                .TextContent;
             return originalName;
         }
 
-        private string GetPlist(IWebDriver webDriver)
+        private async Task<string> GetPlistAsync(string pageSource)
         {
-            var plistUri = webDriver.FindElement(By
-                .CssSelector("#player_wrap > div.pgs-player-inside > script:nth-child(5)"))
-                .GetAttribute("innerHTML")
+            var document = await GetDocumentAsync(pageSource);
+
+            string plistUri = document
+                .QuerySelector("#player_wrap > div.pgs-player-inside > script:nth-child(5)")
+                .InnerHtml
                 .Remove(0, 9);
 
             plistUri = plistUri.Split('"')[1];
             var timeSubstr = plistUri.IndexOf("?time=");
             plistUri = "http://seasonvar.ru" + plistUri.Remove(timeSubstr, plistUri.Length - timeSubstr);
 
-            webDriver.Navigate().GoToUrl(plistUri);
-            string plistJson = webDriver.FindElement(By.TagName("body")).Text;
-            return plistJson;
-        }
-
-        private IWebDriver InitializeWebDriver()
-        {
-            IWebDriver webDriver;
-            var chromeOptions = new ChromeOptions();
-            chromeOptions.AddArguments(new List<string>()
-                {
-                    "--window-size=1200,1000",
-                    "--blink-settings=imagesEnabled=false",
-                });
-
-            if (IsHeadless)
-                chromeOptions.AddArgument("--headless");
-            if (IsEnableTorProxy)
-                chromeOptions.AddArgument("--proxy-server=socks5://localhost:9050");
-
-            var chromeDriverService = ChromeDriverService.CreateDefaultService();
-            chromeDriverService.HideCommandPromptWindow = true;
-            webDriver = new ChromeDriver(chromeDriverService, chromeOptions);
-            return webDriver;
+            var plistJsonPage = WebRequester.GetWebPageSource(plistUri);
+            document = await GetDocumentAsync(plistJsonPage);
+            return document.QuerySelector("body").TextContent;
         }
     }
 }

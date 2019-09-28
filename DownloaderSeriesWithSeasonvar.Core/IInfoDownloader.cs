@@ -6,9 +6,6 @@ namespace DownloaderSeriesWithSeasonvar.Core
 {
     public interface IInfoDownloader
     {
-        bool IsEnableTorProxy { get; }
-        bool IsHeadless { get; }
-
         List<Uri> GetInfoList(Uri address);
 
         Task<List<Uri>> GetInfoListAsync(Uri address);

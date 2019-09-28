@@ -74,7 +74,10 @@ namespace DownloaderSeriesWithSeasonvar.Core
                 seasonAddressList = await tvSeriesInfoDownloader.GetInfoListAsync(address);
                 tvSeries = new TvSeries(address, seasonAddressList);
                 foreach (var seasonUri in tvSeries.SeasonUriList)
-                    tvSeries.SeasonList.Add(await BuildSeasonAsync(seasonUri));
+                {
+                    var season = await BuildSeasonAsync(seasonUri);
+                    tvSeries.SeasonList.Add(season);
+                }
             }
             catch (Exception ex)
             {
