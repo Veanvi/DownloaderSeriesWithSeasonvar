@@ -33,7 +33,7 @@ namespace DownloaderSeriesWithSeasonvar.Core
 
             try
             {
-                var pageSource = WebRequester.GetWebPageSource(address.ToString());
+                var pageSource = await WebRequester.GetWebPageSourceAsync(address.ToString());
                 originalName = await GetNameFromPageAsync(pageSource);
 
                 var document = await GetDocumentAsync(pageSource);
@@ -65,7 +65,7 @@ namespace DownloaderSeriesWithSeasonvar.Core
 
             try
             {
-                var pageSource = WebRequester.GetWebPageSource(address.ToString());
+                var pageSource = await WebRequester.GetWebPageSourceAsync(address.ToString());
                 originalName = await GetNameFromPageAsync(pageSource);
             }
             catch (Exception)

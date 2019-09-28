@@ -9,5 +9,7 @@ namespace DownloaderSeriesWithSeasonvar.Core
     public interface IWebRequester : IDisposable
     {
         string GetWebPageSource(string address);
+
+        Task<string> GetWebPageSourceAsync(string address);
     }
 }

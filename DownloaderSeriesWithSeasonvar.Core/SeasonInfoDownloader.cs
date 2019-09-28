@@ -31,7 +31,7 @@ namespace DownloaderSeriesWithSeasonvar.Core
 
             try
             {
-                string pageSource = WebRequester.GetWebPageSource(address.ToString());
+                string pageSource = await WebRequester.GetWebPageSourceAsync(address.ToString());
                 originalName = await GetNameFromPageAsync(pageSource);
                 playlistJson = await GetPlistAsync(pageSource);
             }
@@ -63,7 +63,7 @@ namespace DownloaderSeriesWithSeasonvar.Core
 
             try
             {
-                var pageSource = WebRequester.GetWebPageSource(address.ToString());
+                var pageSource = await WebRequester.GetWebPageSourceAsync(address.ToString());
                 originalName = await GetNameFromPageAsync(pageSource);
             }
             catch (Exception)
@@ -103,7 +103,7 @@ namespace DownloaderSeriesWithSeasonvar.Core
             var timeSubstr = plistUri.IndexOf("?time=");
             plistUri = "http://seasonvar.ru" + plistUri.Remove(timeSubstr, plistUri.Length - timeSubstr);
 
-            var plistJsonPage = WebRequester.GetWebPageSource(plistUri);
+            var plistJsonPage = await WebRequester.GetWebPageSourceAsync(plistUri);
             document = await GetDocumentAsync(plistJsonPage);
             return document.QuerySelector("body").TextContent;
         }

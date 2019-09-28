@@ -47,6 +47,13 @@ namespace DownloaderSeriesWithSeasonvar.Core
             return WebDriver.PageSource;
         }
 
+        public async Task<string> GetWebPageSourceAsync(string address)
+        {
+            var task = Task.Factory.StartNew(() => GetWebPageSource(address));
+            await task;
+            return task.Result;
+        }
+
         private IWebDriver SetupWebDriver()
         {
             IWebDriver webDriver;

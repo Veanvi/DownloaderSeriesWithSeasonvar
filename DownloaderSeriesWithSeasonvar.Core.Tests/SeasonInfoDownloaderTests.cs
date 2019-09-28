@@ -87,10 +87,10 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
             subWebRequester.GetWebPageSource(Arg.Is<string>(x => !x.Contains(".txt")))
                 .Returns(TestPage.CorrectModelObjects.GetSeason1Source());
 
-            //subWebRequester.GetWebPageSourceAsync(Arg.Is<string>(x => x.Contains(".txt")))
-            //    .Returns(TestPage.CorrectModelObjects.GetSeason1Playlist());
-            //subWebRequester.GetWebPageSourceAsync(Arg.Is<string>(x => !x.Contains(".txt")))
-            //    .Returns(TestPage.CorrectModelObjects.GetSeason1Source());
+            subWebRequester.GetWebPageSourceAsync(Arg.Is<string>(x => x.Contains(".txt")))
+                .Returns(TestPage.CorrectModelObjects.GetSeason1Playlist());
+            subWebRequester.GetWebPageSourceAsync(Arg.Is<string>(x => !x.Contains(".txt")))
+                .Returns(TestPage.CorrectModelObjects.GetSeason1Source());
         }
 
         private SeasonInfoDownloader CreateSeasonInfoDownloader()
