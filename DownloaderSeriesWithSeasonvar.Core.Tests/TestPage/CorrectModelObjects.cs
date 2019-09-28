@@ -22,13 +22,13 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests.TestPage
 
         public static string GetSeason1Playlist()
         {
-            var path = @"TestPage\Season1Playlist.html";
+            var path = @"TestPage\Season1Playlist.txt";
             return GetTextFromFile(path);
         }
 
         public static string GetSeason1Source()
         {
-            var path = @"TestPage\Season1Source.html";
+            var path = @"TestPage\Season1Source.txt";
             return GetTextFromFile(path);
         }
 
@@ -48,13 +48,13 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests.TestPage
 
         public static string GetSeason2Playlist()
         {
-            var path = @"TestPage\Season2Playlist.html";
+            var path = @"TestPage\Season2Playlist.txt";
             return GetTextFromFile(path);
         }
 
         public static string GetSeason2Source()
         {
-            var path = @"TestPage\Season2Source.html";
+            var path = @"TestPage\Season2Source.txt";
             return GetTextFromFile(path);
         }
 
@@ -74,13 +74,13 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests.TestPage
 
         public static string GetSeason3Playlist()
         {
-            var path = @"TestPage\Season3Playlist.html";
+            var path = @"TestPage\Season3Playlist.txt";
             return GetTextFromFile(path);
         }
 
         public static string GetSeason3Source()
         {
-            var path = @"TestPage\Season3Source.html";
+            var path = @"TestPage\Season3Source.txt";
             return GetTextFromFile(path);
         }
 

@@ -37,6 +37,23 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
         }
 
         [TestMethod]
+        public async Task GetInfoListAsync_CheckThrowException_Exception()
+        {
+            // Arrage
+            var subWebRequeter = Substitute.For<IWebRequester>();
+            subWebRequester.GetWebPageSourceAsync(Arg.Any<string>())
+                .Returns(Task.FromResult(""));
+            var tvSeriesInfoDownloader = new TvSeriesInfoDownloader(subWebRequeter);
+
+            // Act
+            var result = await Assert.ThrowsExceptionAsync<Exception>(
+                 () => tvSeriesInfoDownloader.GetInfoListAsync(
+                    new Uri("http://seasonvar.ru")));
+            // Assert
+            StringAssert.Contains("Ошибка загрузки данных", result.Message);
+        }
+
+        [TestMethod]
         public async Task GetInfoListAsync_GettingSeasonsUri_CorrectUriTestPageSeason1()
         {
             // Arrange
@@ -75,6 +92,23 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
         }
 
         [TestMethod]
+        public async Task GetOriginalNameAsync_CheckThrowException_Exception()
+        {
+            // Arrage
+            var subWebRequeter = Substitute.For<IWebRequester>();
+            subWebRequester.GetWebPageSourceAsync(Arg.Any<string>())
+                .Returns(Task.FromResult(""));
+            var tvSeriesInfoDownloader = new TvSeriesInfoDownloader(subWebRequeter);
+
+            // Act
+            var result = await Assert.ThrowsExceptionAsync<Exception>(
+                 () => tvSeriesInfoDownloader.GetOriginalNameAsync(
+                    new Uri("http://seasonvar.ru")));
+            // Assert
+            StringAssert.Contains("Ошибка загрузки данных", result.Message);
+        }
+
+        [TestMethod]
         public async Task GetOriginalNameAsync_GettingTvSeriesName_CorrectNameTestPageSeason1()
         {
             // Arrange
@@ -86,6 +120,21 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
 
             // Assert
             StringAssert.Equals("A Touch of Cloth", result);
+        }
+
+        [TestMethod]
+        public async Task GetOriginalNameAsync_ReternSavedName_CorrectNameSeason1()
+        {
+            // Arrange
+            var tvSeriesInfoDownloader = this.CreateTvSeriesInfoDownloader();
+            Uri address = new Uri("http://seasonvar.ru/serial-5583-Inspektor_Klot.html");
+            var firstName = tvSeriesInfoDownloader.GetOriginalName(address);
+
+            // Act
+            var result = tvSeriesInfoDownloader.GetOriginalName(address);
+
+            // Assert
+            StringAssert.Equals(firstName, result);
         }
 
         [TestInitialize]
