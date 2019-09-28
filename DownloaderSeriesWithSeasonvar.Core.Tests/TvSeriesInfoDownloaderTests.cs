@@ -50,7 +50,7 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
                  () => tvSeriesInfoDownloader.GetInfoListAsync(
                     new Uri("http://seasonvar.ru")));
             // Assert
-            StringAssert.Contains("Ошибка загрузки данных", result.Message);
+            StringAssert.Contains(result.Message, "Ошибка загрузки данных");
         }
 
         [TestMethod]
@@ -105,7 +105,7 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
                  () => tvSeriesInfoDownloader.GetOriginalNameAsync(
                     new Uri("http://seasonvar.ru")));
             // Assert
-            StringAssert.Contains("Ошибка загрузки данных", result.Message);
+            StringAssert.Contains(result.Message, "Ошибка загрузки данных");
         }
 
         [TestMethod]
