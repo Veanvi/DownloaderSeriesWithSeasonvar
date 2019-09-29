@@ -15,6 +15,7 @@ namespace DownloaderSeriesWithSeasonvar.UI
         public MainWindow()
         {
             // TODO: Выяснить почему при сборке созона в объект не добавляется PlaylistJson
+            // TODO: Удалить это задание
 
             InitializeComponent();
 #if DEBUG
