@@ -131,7 +131,7 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
             var firstName = tvSeriesInfoDownloader.GetOriginalName(address);
 
             // Act
-            var result = tvSeriesInfoDownloader.GetOriginalName(address);
+            var result = await tvSeriesInfoDownloader.GetOriginalNameAsync(address);
 
             // Assert
             StringAssert.Equals(firstName, result);
