@@ -6,7 +6,7 @@ using System.IO;
 
 namespace DownloaderSeriesWithSeasonvar.Core.Tests.TestPage
 {
-    internal static class SeasonTestInfoBuilder
+    public static class SeasonTestInfoBuilder
     {
         private static string pathToPlaylists = @"TestPage\Playlists\";
         private static string pathToWebPages = @"TestPage\WebPages\";

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DownloaderSeriesWithSeasonvar.Core.Tests.TestPage
 {
-    internal class SeasonTestInfo
+    public class SeasonTestInfo
     {
         public SeasonTestInfo(string webSource,
                               string jsonWebSourcen,

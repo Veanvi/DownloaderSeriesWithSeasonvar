@@ -1,8 +1,7 @@
-using DownloaderSeriesWithSeasonvar.Core;
+using DownloaderSeriesWithSeasonvar.Core.Tests.TestPage;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DownloaderSeriesWithSeasonvar.Core.Tests
@@ -10,23 +9,25 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
     [TestClass]
     public class SeasonInfoDownloaderTests
     {
-        private IWebRequester subWebRequester;
-
-        [TestMethod]
-        public void GetInfoList_GettingEpisodesUri_CorrectUriTestPageSeason1()
+        [DataTestMethod]
+        [DataRow(SeasonTestInfoBuilder.ExistingSeasons.FireflyS1)]
+        [DataRow(SeasonTestInfoBuilder.ExistingSeasons.TouchOfClothS1)]
+        [DataRow(SeasonTestInfoBuilder.ExistingSeasons.TouchOfClothS2)]
+        [DataRow(SeasonTestInfoBuilder.ExistingSeasons.TouchOfClothS3)]
+        public void GetInfoList_GettingEpisodesUri_CorrectUri(
+            SeasonTestInfoBuilder.ExistingSeasons existSeasonTestInfo)
         {
             // Arrange
-            var seasonInfoDownloader = this.CreateSeasonInfoDownloader();
-            Uri address = new Uri("http://seasonvar.ru/serial-5583-Inspektor_Klot.html");
-            var correctSeason = TestPage.CorrectModelObjects.GetSeason1Object();
+            var testInfo = SeasonTestInfoBuilder.GetSeasonTestView(existSeasonTestInfo);
+            var seasonInfoDownloader = this.CreateSeasonInfoDownloader(testInfo);
 
             // Act
-            var resultUriList = seasonInfoDownloader.GetInfoList(address);
+            var resultUriList = seasonInfoDownloader.GetInfoList(new Uri(testInfo.Uri));
 
             // Assert
-            for (int i = 0; i < correctSeason.EpisodeList.Count; i++)
+            for (int i = 0; i < testInfo.EpisodeCounts; i++)
             {
-                Assert.AreEqual(correctSeason.EpisodeList[i].FileUri, resultUriList[i]);
+                StringAssert.Contains(resultUriList[i].ToString(), testInfo.EpisodeFileNames[i]);
             }
         }
 
@@ -34,10 +35,10 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
         public async Task GetInfoListAsync_CheckThrowException_Exception()
         {
             // Arrage
-            var subWebRequeter = Substitute.For<IWebRequester>();
+            var subWebRequester = Substitute.For<IWebRequester>();
             subWebRequester.GetWebPageSourceAsync(Arg.Any<string>())
                 .Returns(Task.FromResult(""));
-            var seasonInfoDownloader = new SeasonInfoDownloader(subWebRequeter);
+            var seasonInfoDownloader = new SeasonInfoDownloader(subWebRequester);
 
             // Act
 
@@ -47,21 +48,25 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
                     new Uri("http://seasonvar.ru")));
         }
 
-        [TestMethod]
-        public async Task GetInfoListAsync_GettingEpisodesUri_CorrectUriTestPageSeason1()
+        [DataTestMethod]
+        [DataRow(SeasonTestInfoBuilder.ExistingSeasons.FireflyS1)]
+        [DataRow(SeasonTestInfoBuilder.ExistingSeasons.TouchOfClothS1)]
+        [DataRow(SeasonTestInfoBuilder.ExistingSeasons.TouchOfClothS2)]
+        [DataRow(SeasonTestInfoBuilder.ExistingSeasons.TouchOfClothS3)]
+        public async Task GetInfoListAsync_GettingEpisodesUri_CorrectUriTest(
+            SeasonTestInfoBuilder.ExistingSeasons existSeasonTestInfo)
         {
             // Arrange
-            var seasonInfoDownloader = this.CreateSeasonInfoDownloader();
-            Uri address = new Uri("http://seasonvar.ru/serial-5583-Inspektor_Klot.html");
-            var correctSeason = TestPage.CorrectModelObjects.GetSeason1Object();
+            var testInfo = SeasonTestInfoBuilder.GetSeasonTestView(existSeasonTestInfo);
+            var seasonInfoDownloader = this.CreateSeasonInfoDownloader(testInfo);
 
             // Act
-            var resultUriList = await seasonInfoDownloader.GetInfoListAsync(address);
+            var resultUriList = await seasonInfoDownloader.GetInfoListAsync(new Uri(testInfo.Uri));
 
             // Assert
-            for (int i = 0; i < correctSeason.EpisodeList.Count; i++)
+            for (int i = 0; i < testInfo.EpisodeCounts; i++)
             {
-                Assert.AreEqual(correctSeason.EpisodeList[i].FileUri, resultUriList[i]);
+                StringAssert.Contains(resultUriList[i].ToString(), testInfo.EpisodeFileNames[i]);
             }
         }
 
@@ -84,10 +89,10 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
         public async Task GetOriginalNameAsync_CheckThrowException_Exception()
         {
             // Arrage
-            var subWebRequeter = Substitute.For<IWebRequester>();
+            var subWebRequester = Substitute.For<IWebRequester>();
             subWebRequester.GetWebPageSourceAsync(Arg.Any<string>())
                 .Returns(Task.FromResult(""));
-            var seasonInfoDownloader = new SeasonInfoDownloader(subWebRequeter);
+            var seasonInfoDownloader = new SeasonInfoDownloader(subWebRequester);
 
             // Act
 
@@ -127,25 +132,28 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
             StringAssert.Equals(firstName, result);
         }
 
-        [TestInitialize]
-        public void TestInitialize()
+        private SeasonInfoDownloader CreateSeasonInfoDownloader(
+            SeasonTestInfo seasonTestInfo)
         {
-            this.subWebRequester = Substitute.For<IWebRequester>();
+            var subWebRequester = Substitute.For<IWebRequester>();
             subWebRequester.GetWebPageSource(Arg.Is<string>(x => x.Contains(".txt")))
-                .Returns(TestPage.CorrectModelObjects.GetSeason1Playlist());
+                .Returns(seasonTestInfo.JsonWebSource);
             subWebRequester.GetWebPageSource(Arg.Is<string>(x => !x.Contains(".txt")))
-                .Returns(TestPage.CorrectModelObjects.GetSeason1Source());
+                .Returns(seasonTestInfo.WebSource);
 
             subWebRequester.GetWebPageSourceAsync(Arg.Is<string>(x => x.Contains(".txt")))
-                .Returns(TestPage.CorrectModelObjects.GetSeason1Playlist());
+                .Returns(seasonTestInfo.JsonWebSource);
             subWebRequester.GetWebPageSourceAsync(Arg.Is<string>(x => !x.Contains(".txt")))
-                .Returns(TestPage.CorrectModelObjects.GetSeason1Source());
+                .Returns(seasonTestInfo.WebSource);
+
+            return new SeasonInfoDownloader(subWebRequester);
         }
 
         private SeasonInfoDownloader CreateSeasonInfoDownloader()
         {
-            return new SeasonInfoDownloader(
-                this.subWebRequester);
+            var existSeasonTestInfo = SeasonTestInfoBuilder.ExistingSeasons.TouchOfClothS1;
+            var seasonTestInfo = SeasonTestInfoBuilder.GetSeasonTestView(existSeasonTestInfo);
+            return CreateSeasonInfoDownloader(seasonTestInfo);
         }
     }
 }

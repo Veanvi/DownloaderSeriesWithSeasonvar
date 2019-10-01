@@ -1,4 +1,5 @@
 using DownloaderSeriesWithSeasonvar.Core;
+using DownloaderSeriesWithSeasonvar.Core.Tests.TestPage;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using System;
@@ -41,8 +42,6 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
         {
             // Arrage
             var subWebRequeter = Substitute.For<IWebRequester>();
-            subWebRequester.GetWebPageSourceAsync(Arg.Any<string>())
-                .Returns(Task.FromResult(""));
             var tvSeriesInfoDownloader = new TvSeriesInfoDownloader(subWebRequeter);
 
             // Act
@@ -96,8 +95,6 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
         {
             // Arrage
             var subWebRequeter = Substitute.For<IWebRequester>();
-            subWebRequester.GetWebPageSourceAsync(Arg.Any<string>())
-                .Returns(Task.FromResult(""));
             var tvSeriesInfoDownloader = new TvSeriesInfoDownloader(subWebRequeter);
 
             // Act
@@ -140,16 +137,19 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
         [TestInitialize]
         public void TestInitialize()
         {
-            this.subWebRequester = Substitute.For<IWebRequester>();
+            var existSeasonTestInfo = SeasonTestInfoBuilder.ExistingSeasons.TouchOfClothS1;
+            var seasonTestInfo = SeasonTestInfoBuilder.GetSeasonTestView(existSeasonTestInfo);
+
+            subWebRequester = Substitute.For<IWebRequester>();
             subWebRequester.GetWebPageSource(Arg.Is<string>(x => x.Contains(".txt")))
-                .Returns(TestPage.CorrectModelObjects.GetSeason1Playlist());
+                .Returns(seasonTestInfo.JsonWebSource);
             subWebRequester.GetWebPageSource(Arg.Is<string>(x => !x.Contains(".txt")))
-                .Returns(TestPage.CorrectModelObjects.GetSeason1Source());
+                .Returns(seasonTestInfo.WebSource);
 
             subWebRequester.GetWebPageSourceAsync(Arg.Is<string>(x => x.Contains(".txt")))
-                .Returns(TestPage.CorrectModelObjects.GetSeason1Playlist());
+                .Returns(seasonTestInfo.JsonWebSource);
             subWebRequester.GetWebPageSourceAsync(Arg.Is<string>(x => !x.Contains(".txt")))
-                .Returns(TestPage.CorrectModelObjects.GetSeason1Source());
+                .Returns(seasonTestInfo.WebSource);
         }
 
         private TvSeriesInfoDownloader CreateTvSeriesInfoDownloader()
