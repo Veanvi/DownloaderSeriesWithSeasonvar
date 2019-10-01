@@ -22,13 +22,20 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests.TestPage
 
         public static string GetSeason1Playlist()
         {
-            var path = @"TestPage\Season1Playlist.txt";
+            var path = @"TestPage\Playlists\TouchOfClothS1.txt";
             return GetTextFromFile(path);
+        }
+
+        public static string GetSeason1PlaylistJson()
+        {
+            var path = @"TestPage\WebPages\TouchOfClothS1.txt";
+            var pageSouce = GetTextFromFile(path);
+            return GetJsonFromPage(pageSouce);
         }
 
         public static string GetSeason1Source()
         {
-            var path = @"TestPage\Season1Source.txt";
+            var path = @"TestPage\WebPages\TouchOfClothS1.txt";
             return GetTextFromFile(path);
         }
 
@@ -48,13 +55,20 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests.TestPage
 
         public static string GetSeason2Playlist()
         {
-            var path = @"TestPage\Season2Playlist.txt";
+            var path = @"TestPage\Playlists\TouchOfClothS2.txt";
             return GetTextFromFile(path);
+        }
+
+        public static string GetSeason2PlaylistJson()
+        {
+            var path = @"TestPage\WebPages\TouchOfClothS2.txt";
+            var pageSouce = GetTextFromFile(path);
+            return GetJsonFromPage(pageSouce);
         }
 
         public static string GetSeason2Source()
         {
-            var path = @"TestPage\Season2Source.txt";
+            var path = @"TestPage\WebPages\TouchOfClothS2.txt";
             return GetTextFromFile(path);
         }
 
@@ -74,27 +88,51 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests.TestPage
 
         public static string GetSeason3Playlist()
         {
-            var path = @"TestPage\Season3Playlist.txt";
+            var path = @"TestPage\Playlists\TouchOfCloth3.txt";
             return GetTextFromFile(path);
+        }
+
+        public static string GetSeason3PlaylistJson()
+        {
+            var path = @"TestPage\WebPages\TouchOfCloth3.txt";
+            var pageSouce = GetTextFromFile(path);
+            return GetJsonFromPage(pageSouce);
         }
 
         public static string GetSeason3Source()
         {
-            var path = @"TestPage\Season3Source.txt";
+            var path = @"TestPage\WebPages\TouchOfCloth3.txt";
             return GetTextFromFile(path);
         }
 
         #endregion Season3
 
-        private static List<Episode> GetEpisodes(string playlistSource)
+        #region Firefly
+
+        public static string GetFireflyPlaylistJson()
         {
-            var context = BrowsingContext.New(Configuration.Default);
-            var document = context.OpenAsync(req => req.Content(playlistSource)).Result;
-            var playlistJson = document.QuerySelector("body").TextContent;
+            var path = @"TestPage\Playlist\FireflyS1.txt";
+            var pageSouce = GetTextFromFile(path);
+            return GetJsonFromPage(pageSouce);
+        }
+
+        #endregion Firefly
+
+        private static List<Episode> GetEpisodes(string Playlistsource)
+        {
+            string playlistJson = GetJsonFromPage(Playlistsource);
 
             var result = PlaylistParser
                 .JsonPlaylistConvertToSeasonObject(playlistJson);
             return result;
+        }
+
+        private static string GetJsonFromPage(string Playlistsource)
+        {
+            var context = BrowsingContext.New(Configuration.Default);
+            var document = context.OpenAsync(req => req.Content(Playlistsource)).Result;
+            var playlistJson = document.QuerySelector("body").TextContent;
+            return playlistJson;
         }
 
         private static string GetTextFromFile(string path)

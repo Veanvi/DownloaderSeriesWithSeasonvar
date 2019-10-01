@@ -41,24 +41,29 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="TestPage\Season1Playlist.txt">
+    <None Update="TestPage\Playlists\FireflyS1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="TestPage\Season1Source.txt">
+    <None Update="TestPage\Playlists\TouchOfClothS1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="TestPage\Season2Playlist.txt">
+    <None Update="TestPage\WebPages\FireflyS1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="TestPage\Season2Source.txt">
+    <None Update="TestPage\WebPages\TouchOfClothS1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="TestPage\Season3Playlist.txt">
+    <None Update="TestPage\Playlists\TouchOfClothS2.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="TestPage\Season3Source.txt">
+    <None Update="TestPage\WebPages\TouchOfClothS2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="TestPage\Playlists\TouchOfClothS3.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="TestPage\WebPages\TouchOfClothS3.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
 </Project>

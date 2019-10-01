@@ -15,9 +15,10 @@ namespace DownloaderSeriesWithSeasonvar.Core
             try
             {
                 allSeriesJson = JArray.Parse(playlistJson);
-                foreach (var series in allSeriesJson)
+                for (int i = 0; i < allSeriesJson.Count; i++)
                 {
-                    byte seriesNumber = (byte)series.SelectToken("id");
+                    var series = allSeriesJson[i];
+                    int seriesNumber = i + 1;
                     Uri seriesUri = RemoveNoiseSubstring((string)series.SelectToken("file"), noisePattern);
                     //int fileSize = GetFileSize(seriesUri);
                     int fileSize = 0;
