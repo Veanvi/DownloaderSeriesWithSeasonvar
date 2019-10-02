@@ -138,7 +138,7 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
         public void TestInitialize()
         {
             var existSeasonTestInfo = SeasonTestInfoBuilder.ExistingSeasons.TouchOfClothS1;
-            var seasonTestInfo = SeasonTestInfoBuilder.GetSeasonTestView(existSeasonTestInfo);
+            var seasonTestInfo = SeasonTestInfoBuilder.GetSeasonTestInfo(existSeasonTestInfo);
 
             subWebRequester = Substitute.For<IWebRequester>();
             subWebRequester.GetWebPageSource(Arg.Is<string>(x => x.Contains(".txt")))

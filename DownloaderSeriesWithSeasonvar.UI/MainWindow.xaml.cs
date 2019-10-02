@@ -1,5 +1,6 @@
 ﻿using DownloaderSeriesWithSeasonvar.Core;
 using System;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
 
@@ -8,7 +9,7 @@ namespace DownloaderSeriesWithSeasonvar.UI
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IDisposable
     {
         private IWebRequester webRequester;
 
@@ -20,6 +21,26 @@ namespace DownloaderSeriesWithSeasonvar.UI
 #if DEBUG
             tbUri.Text = "http://seasonvar.ru/serial-5583-Inspektor_Klot.html";
 #endif
+        }
+
+        ~MainWindow()
+        {
+            Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (webRequester != null)
+            {
+                webRequester.Dispose();
+                webRequester = null;
+            }
         }
 
         private void BtnCopyToClipboard_Click(object sender, RoutedEventArgs e)
@@ -47,14 +68,14 @@ namespace DownloaderSeriesWithSeasonvar.UI
         private async void GetSeason_Click(object sender, RoutedEventArgs e)
         {
             tbUriList.Text = "";
-            if (tbUri.Text == "")
+            if (string.IsNullOrEmpty(tbUri.Text))
             {
                 lbCurrentStageOfWork.Content = "Введите адрес сереала";
                 return;
             }
             lbCurrentStageOfWork.Content = "Запущен браузер";
 
-            Season season = null;
+            Season season;
 
             try
             {
@@ -75,14 +96,14 @@ namespace DownloaderSeriesWithSeasonvar.UI
         private async void GetTvSeries_Click(object sender, RoutedEventArgs e)
         {
             tbUriList.Text = "";
-            if (tbUri.Text == "")
+            if (string.IsNullOrEmpty(tbUri.Text))
             {
                 lbCurrentStageOfWork.Content = "Введите адрес сереала";
                 return;
             }
             lbCurrentStageOfWork.Content = "Пытаюсь получить все ссылки";
 
-            TvSeries tvSeries = null;
+            TvSeries tvSeries;
             try
             {
                 ModelObjectsBuilder objectBuilder = GetModelObjectsBuilder();
@@ -102,7 +123,7 @@ namespace DownloaderSeriesWithSeasonvar.UI
         private void OpenPlistInputWindow_Click(object sender, RoutedEventArgs e)
         {
             var plistWindow = new PlistInputWindow();
-            Season season = null;
+            Season season;
 
             plistWindow.Owner = this;
             if (plistWindow.ShowDialog() == true)

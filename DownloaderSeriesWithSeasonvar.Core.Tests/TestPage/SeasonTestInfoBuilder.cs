@@ -19,7 +19,7 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests.TestPage
             FireflyS1
         }
 
-        public static SeasonTestInfo GetSeasonTestView(ExistingSeasons seasonName)
+        public static SeasonTestInfo GetSeasonTestInfo(ExistingSeasons seasonName)
         {
             SeasonTestInfo testView = null;
             switch (seasonName)

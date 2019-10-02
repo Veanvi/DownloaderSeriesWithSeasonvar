@@ -18,7 +18,7 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
             SeasonTestInfoBuilder.ExistingSeasons existSeasonTestInfo)
         {
             // Arrange
-            var testInfo = SeasonTestInfoBuilder.GetSeasonTestView(existSeasonTestInfo);
+            var testInfo = SeasonTestInfoBuilder.GetSeasonTestInfo(existSeasonTestInfo);
             var seasonInfoDownloader = this.CreateSeasonInfoDownloader(testInfo);
 
             // Act
@@ -57,7 +57,7 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
             SeasonTestInfoBuilder.ExistingSeasons existSeasonTestInfo)
         {
             // Arrange
-            var testInfo = SeasonTestInfoBuilder.GetSeasonTestView(existSeasonTestInfo);
+            var testInfo = SeasonTestInfoBuilder.GetSeasonTestInfo(existSeasonTestInfo);
             var seasonInfoDownloader = this.CreateSeasonInfoDownloader(testInfo);
 
             // Act
@@ -152,7 +152,7 @@ namespace DownloaderSeriesWithSeasonvar.Core.Tests
         private SeasonInfoDownloader CreateSeasonInfoDownloader()
         {
             var existSeasonTestInfo = SeasonTestInfoBuilder.ExistingSeasons.TouchOfClothS1;
-            var seasonTestInfo = SeasonTestInfoBuilder.GetSeasonTestView(existSeasonTestInfo);
+            var seasonTestInfo = SeasonTestInfoBuilder.GetSeasonTestInfo(existSeasonTestInfo);
             return CreateSeasonInfoDownloader(seasonTestInfo);
         }
     }

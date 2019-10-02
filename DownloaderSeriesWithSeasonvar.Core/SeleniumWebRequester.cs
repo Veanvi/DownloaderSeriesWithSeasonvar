@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DownloaderSeriesWithSeasonvar.Core
 {
-    public class SeleniumWebRequester : IWebRequester
+    public sealed class SeleniumWebRequester : IWebRequester
     {
         public SeleniumWebRequester(bool enableTorProxy, bool headless)
         {
